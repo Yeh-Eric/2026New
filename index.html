@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>卡牌對戰平衡模擬器 (自由混搭版)</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #1e1e2e; color: #cdd6f4; padding: 20px; margin: 0; }
+        .container { max-width: 900px; margin: 0 auto; background-color: #313244; padding: 20px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
+        h1 { text-align: center; color: #f38ba8; }
+        .flex-box { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 20px; margin-bottom: 20px; }
+        .player-card { flex: 1; min-width: 300px; background-color: #45475a; padding: 20px; border-radius: 8px; border-top: 5px solid; }
+        #p1-card { border-color: #f38ba8; }
+        #p2-card { border-color: #89b4fa; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; color: #a6adc8; font-size: 14px; }
+        select { width: 100%; padding: 10px; background-color: #1e1e2e; color: #cdd6f4; border: 1px solid #585b70; border-radius: 5px; font-size: 15px; }
+        optgroup { color: #f9e2af; font-style: normal; font-weight: bold; }
+        button { width: 100%; padding: 15px; font-size: 18px; font-weight: bold; background-color: #a6e3a1; color: #1e1e2e; border: none; border-radius: 8px; cursor: pointer; transition: 0.2s; margin-top: 10px; }
+        button:hover { background-color: #94e2d5; }
+        .result-box { margin-top: 20px; padding: 20px; background-color: #1e1e2e; border-radius: 8px; white-space: pre-wrap; font-family: monospace; font-size: 16px; line-height: 1.5; border-left: 5px solid #a6e3a1; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>⚔️ 營隊戰鬥模擬器 (裝備自由選配)</h1>
+    
+    <div class="flex-box">
+        <!-- 玩家 1 -->
+        <div class="player-card" id="p1-card">
+            <h3 style="color: #f38ba8; margin-top: 0;">🔴 玩家 1</h3>
+            
+            <div class="form-group">
+                <label>👕 盔甲 (決定基礎血量 20+甲)</label>
+                <select id="p1-armor">
+                    <optgroup label="初始 F (1甲)">
+                        <option value="皮衣">皮衣</option>
+                    </optgroup>
+                    <optgroup label="基本 C- (2甲)">
+                        <option value="山甲">山甲</option>
+                        <option value="緊身吊嘎 + 四角內褲">緊身吊嘎 + 四角內褲</option>
+                    </optgroup>
+                    <optgroup label="進階 B (4甲)">
+                        <option value="女僕裝">女僕裝</option>
+                        <option value="營服">營服</option>
+                        <option value="8+9 三件套">8+9 三件套</option>
+                    </optgroup>
+                    <optgroup label="特別 A+ (7甲 | 附帶技能)">
+                        <option value="星河聖甲">星河聖甲 (星際: 低血回復)</option>
+                        <option value="寂滅聖鎧" selected>寂滅聖鎧 (深淵: 致命無敵)</option>
+                        <option value="神皇遺甲">神皇遺甲 (神界: 絕對控場)</option>
+                    </optgroup>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>🛡️ 盾牌 (決定減傷)</label>
+                <select id="p1-shield">
+                    <optgroup label="初始 F (0盾)">
+                        <option value="無">無盾牌</option>
+                    </optgroup>
+                    <optgroup label="基本 C- (1盾)">
+                        <option value="執秘小心肝">執秘小心肝</option>
+                        <option value="好好再見，不負遇見">好好再見，不負遇見</option>
+                    </optgroup>
+                    <optgroup label="進階 B (2盾)">
+                        <option value="Calculus metric version 9e">Calculus metric version 9e</option>
+                        <option value="吸牛盾">吸牛盾</option>
+                        <option value="防彈少年團">防彈少年團</option>
+                    </optgroup>
+                    <optgroup label="特別 A+ (3盾 | 附帶技能)">
+                        <option value="星辰障壁">星辰障壁 (星際: 雙回合加盾)</option>
+                        <option value="深淵封印" selected>深淵封印 (深淵: 越線斬殺)</option>
+                        <option value="神域之門">神域之門 (神界: 致死鎖血)</option>
+                    </optgroup>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>🗡️ 武器 (決定傷害陣列)</label>
+                <select id="p1-weapon">
+                    <optgroup label="初始 F (微弱)">
+                        <option value="木劍">木劍</option>
+                    </optgroup>
+                    <optgroup label="基本 C- (平庸)">
+                        <option value="聖誕樹">聖誕樹 (穩定)</option>
+                        <option value="啞鈴">啞鈴 (激進)</option>
+                    </optgroup>
+                    <optgroup label="進階 B (強力)">
+                        <option value="撞球桌">撞球桌 (穩定)</option>
+                        <option value="炙杖">炙杖 (激進)</option>
+                        <option value="歐兜拜">歐兜拜 (機車)</option>
+                    </optgroup>
+                    <optgroup label="特別 A+ (毀滅)">
+                        <option value="星隕之刃">星隕之刃 (星際: 極度穩定)</option>
+                        <option value="終焉之刃" selected>終焉之刃 (深淵: 爆發與自殘)</option>
+                        <option value="神罰之刃">神罰之刃 (神界: 保底高傷)</option>
+                    </optgroup>
+                </select>
+            </div>
+        </div>
+        
+        <!-- 玩家 2 -->
+        <div class="player-card" id="p2-card">
+            <h3 style="color: #89b4fa; margin-top: 0;">🔵 玩家 2</h3>
+            
+            <div class="form-group">
+                <label>👕 盔甲</label>
+                <select id="p2-armor">
+                    <optgroup label="初始 F">
+                        <option value="皮衣">皮衣</option>
+                    </optgroup>
+                    <optgroup label="基本 C-">
+                        <option value="山甲">山甲</option>
+                        <option value="緊身吊嘎 + 四角內褲">緊身吊嘎 + 四角內褲</option>
+                    </optgroup>
+                    <optgroup label="進階 B">
+                        <option value="女僕裝">女僕裝</option>
+                        <option value="營服">營服</option>
+                        <option value="8+9 三件套">8+9 三件套</option>
+                    </optgroup>
+                    <optgroup label="特別 A+">
+                        <option value="星河聖甲" selected>星河聖甲</option>
+                        <option value="寂滅聖鎧">寂滅聖鎧</option>
+                        <option value="神皇遺甲">神皇遺甲</option>
+                    </optgroup>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>🛡️ 盾牌</label>
+                <select id="p2-shield">
+                    <optgroup label="初始 F">
+                        <option value="無">無盾牌</option>
+                    </optgroup>
+                    <optgroup label="基本 C-">
+                        <option value="執秘小心肝">執秘小心肝</option>
+                        <option value="好好再見，不負遇見">好好再見，不負遇見</option>
+                    </optgroup>
+                    <optgroup label="進階 B">
+                        <option value="Calculus metric version 9e">Calculus metric version 9e</option>
+                        <option value="吸牛盾">吸牛盾</option>
+                        <option value="防彈少年團">防彈少年團</option>
+                    </optgroup>
+                    <optgroup label="特別 A+">
+                        <option value="星辰障壁" selected>星辰障壁</option>
+                        <option value="深淵封印">深淵封印</option>
+                        <option value="神域之門">神域之門</option>
+                    </optgroup>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>🗡️ 武器</label>
+                <select id="p2-weapon">
+                    <optgroup label="初始 F">
+                        <option value="木劍">木劍</option>
+                    </optgroup>
+                    <optgroup label="基本 C-">
+                        <option value="聖誕樹">聖誕樹</option>
+                        <option value="啞鈴">啞鈴</option>
+                    </optgroup>
+                    <optgroup label="進階 B">
+                        <option value="撞球桌">撞球桌</option>
+                        <option value="炙杖">炙杖</option>
+                        <option value="歐兜拜">歐兜拜</option>
+                    </optgroup>
+                    <optgroup label="特別 A+">
+                        <option value="星隕之刃" selected>星隕之刃</option>
+                        <option value="終焉之刃">終焉之刃</option>
+                        <option value="神罰之刃">神罰之刃</option>
+                    </optgroup>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <button onclick="runSimulation()">🎲 執行萬場模擬對戰</button>
+    <div id="result" class="result-box">設定雙方裝備後，點擊上方按鈕開始模擬...</div>
+</div>
+
+<script>
+// --- 裝備基礎數值庫[cite: 17] ---
+const WEAPONS = {
+    "木劍": [1, 2, 2, 3, 3, 4], // 給予 F 階合理的弱勢傷害
+    "聖誕樹": [5, 5, 5, 5, 6, 6],
+    "啞鈴": [3, 5, 7, 9, 11, -3],
+    "撞球桌": [5, 6, 6, 7, 7, 8],
+    "炙杖": [-5, 25, -5, 15, -1, 8],
+    "歐兜拜": [0, 0, 0, 8, 11, 14],
+    "星隕之刃": [9, 10, 10, 11, 11, 12],
+    "終焉之刃": [-4, -4, 12, 12, 19, 35],
+    "神罰之刃": [6, 7, 7, 9, 15, 18]
+};
+
+const ARMOR_STATS = {
+    "皮衣": 1,
+    "山甲": 2, "緊身吊嘎 + 四角內褲": 2,
+    "女僕裝": 4, "營服": 4, "8+9 三件套": 4,
+    "星河聖甲": 7, "寂滅聖鎧": 7, "神皇遺甲": 7
+};
+
+const SHIELD_STATS = {
+    "無": 0,
+    "執秘小心肝": 1, "好好再見，不負遇見": 1,
+    "Calculus metric version 9e": 2, "吸牛盾": 2, "防彈少年團": 2,
+    "星辰障壁": 3, "深淵封印": 3, "神域之門": 3
+};
+
+// 套裝從屬判定[cite: 17]
+const SETS = {
+    "星際": ["星河聖甲", "星辰障壁", "星隕之刃"],
+    "深淵": ["寂滅聖鎧", "深淵封印", "終焉之刃"],
+    "神界": ["神皇遺甲", "神域之門", "神罰之刃"]
+};
+
+function rollDice() {
+    return Math.floor(Math.random() * 6);
+}
+
+class Character {
+    constructor(armor_name, shield_name, weapon_name) {
+        // 1. 取得基礎數值
+        let armor_val = ARMOR_STATS[armor_name];
+        let shield_val = SHIELD_STATS[shield_name];
+        this.weapon = WEAPONS[weapon_name];
+        
+        // 2. 判定 A+ 技能與套裝共鳴
+        this.skills = [];
+        let set_hp = 0;
+        let set_shield = 0;
+        this.set_sword = 0;
+        
+        let equip_list = [armor_name, shield_name, weapon_name];
+        
+        // 給予技能：若裝備名稱包含在 A+ 套裝內，即獲得同名技能
+        Object.values(SETS).flat().forEach(item => {
+            if (equip_list.includes(item)) this.skills.push(item);
+        });
+
+        // 結算套裝共鳴件數
+        let star_count = equip_list.filter(i => SETS["星際"].includes(i)).length;
+        let abyss_count = equip_list.filter(i => SETS["深淵"].includes(i)).length;
+        let divine_count = equip_list.filter(i => SETS["神界"].includes(i)).length;
+
+        if (star_count >= 2) set_hp = (star_count === 3) ? 15 : 8;
+        if (divine_count >= 2) set_shield = (divine_count === 3) ? 2 : 1;
+        if (abyss_count >= 2) this.set_sword = (abyss_count === 3) ? 3 : 1;
+
+        // 3. 實裝最終面板
+        this.max_hp = 20 + armor_val + set_hp;
+        this.hp = this.max_hp;
+        this.base_shield = shield_val + set_shield;
+        this.shield = this.base_shield;
+        
+        // 戰鬥狀態暫存
+        this.used_skills = new Set();
+        this.shield_buff_turns = 0;
+        this.invincible = false;
+        this.skip_turn = false;
+        this.abyss_seal_active = false;
+    }
+
+    is_alive() { return this.hp > 0; }
+
+    try_use_skills(target, turn_count) {
+        if (this.skills.includes("星河聖甲") && !this.used_skills.has("星河聖甲") && this.hp <= this.max_hp * 0.5) {
+            this.hp += 10;
+            this.used_skills.add("星河聖甲");
+        }
+        if (this.skills.includes("寂滅聖鎧") && !this.used_skills.has("寂滅聖鎧") && this.hp <= 18) {
+            this.invincible = true;
+            this.used_skills.add("寂滅聖鎧");
+        }
+        if (this.skills.includes("神皇遺甲") && !this.used_skills.has("神皇遺甲") && turn_count === 3) {
+            target.skip_turn = true;
+            this.used_skills.add("神皇遺甲");
+        }
+        if (this.skills.includes("星辰障壁") && !this.used_skills.has("星辰障壁") && this.hp <= this.max_hp * 0.45) {
+            this.shield = this.base_shield + 4;
+            this.shield_buff_turns = 2;
+            this.used_skills.add("星辰障壁");
+        }
+        if (this.skills.includes("深淵封印") && !this.used_skills.has("深淵封印") && (target.hp <= 13 || this.hp <= 12)) {
+            this.abyss_seal_active = true;
+            this.used_skills.add("深淵封印");
+        }
+    }
+
+    attack(target, turn_count) {
+        if (this.skip_turn) {
+            this.skip_turn = false;
+            return;
+        }
+
+        this.try_use_skills(target, turn_count);
+        target.try_use_skills(this, turn_count);
+
+        let base_dmg = this.weapon[rollDice()];
+
+        if (base_dmg < 0) {
+            this.hp += base_dmg;
+        } else {
+            let bonus_sword = this.abyss_seal_active ? 10 : 0;
+            let actual_dmg = Math.max(0, (base_dmg + this.set_sword + bonus_sword) - target.shield);
+            this.abyss_seal_active = false;
+
+            if (target.invincible) {
+                actual_dmg = 0;
+                target.invincible = false;
+            }
+
+            target.hp -= actual_dmg;
+
+            if (target.hp <= 0 && target.skills.includes("神域之門") && !target.used_skills.has("神域之門")) {
+                target.hp = 1;
+                target.used_skills.add("神域之門");
+            }
+        }
+
+        if (this.shield_buff_turns > 0) {
+            this.shield_buff_turns -= 1;
+            if (this.shield_buff_turns === 0) {
+                this.shield = this.base_shield;
+            }
+        }
+    }
+}
+
+function runSimulation() {
+    let p1_a = document.getElementById("p1-armor").value;
+    let p1_s = document.getElementById("p1-shield").value;
+    let p1_w = document.getElementById("p1-weapon").value;
+    
+    let p2_a = document.getElementById("p2-armor").value;
+    let p2_s = document.getElementById("p2-shield").value;
+    let p2_w = document.getElementById("p2-weapon").value;
+    
+    let matches = 10000;
+    let p1_wins = 0;
+    let total_turns = 0;
+
+    for (let i = 0; i < matches; i++) {
+        let p1 = new Character(p1_a, p1_s, p1_w);
+        let p2 = new Character(p2_a, p2_s, p2_w);
+        
+        let turns = 0;
+        let [first, second] = (Math.random() < 0.5) ? [p1, p2] : [p2, p1];
+
+        while (first.is_alive() && second.is_alive()) {
+            turns += 1;
+            first.attack(second, turns);
+            if (!second.is_alive()) break;
+            second.attack(first, turns);
+        }
+
+        if (p1.is_alive()) p1_wins += 1;
+        total_turns += turns;
+    }
+
+    let p1_wr = (p1_wins / matches * 100).toFixed(1);
+    let p2_wr = ((matches - p1_wins) / matches * 100).toFixed(1);
+    let avg_turns = (total_turns / matches).toFixed(1);
+
+    let resultText = `【模擬結果】\n`;
+    resultText += `🔴 P1: [${p1_a}] + [${p1_s}] + [${p1_w}]\n`;
+    resultText += `🔵 P2: [${p2_a}] + [${p2_s}] + [${p2_w}]\n\n`;
+    resultText += `勝率: 🔴 ${p1_wr}%  vs  🔵 ${p2_wr}%\n`;
+    resultText += `平均回合數: ${avg_turns} 回合`;
+
+    document.getElementById("result").innerText = resultText;
+}
+</script>
+</body>
+</html>
