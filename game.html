@@ -34,6 +34,11 @@
         .p2-side .hp-bar-fill { background-color: #f38ba8; }
         .stats-row { display: flex; justify-content: space-around; margin-top: 10px; font-size: 18px; font-weight: bold; }
         
+        /* 裝備圖片顯示 */
+        .equip-images { display: flex; justify-content: center; gap: 10px; margin-bottom: 10px; }
+        .equip-img { width: 60px; height: 60px; object-fit: cover; border-radius: 8px; border: 2px solid #585b70; background-color: #181825; }
+        .no-img { display: flex; align-items: center; justify-content: center; color: #a6adc8; font-size: 12px; font-weight: bold; }
+
         .action-area { text-align: center; margin-bottom: 20px; padding: 15px; background-color: #181825; border-radius: 8px; border: 1px dashed #585b70; }
         .dice-display { font-size: 48px; margin: 10px 0; min-height: 70px; display: flex; justify-content: center; align-items: center; }
         
@@ -52,17 +57,19 @@
         .log-skill { color: #f9e2af; font-weight: bold; }
         .log-dmg { color: #eba0ac; font-weight: bold; }
 
-        /* 圖鑑彈出視窗 (Modal) */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: flex; justify-content: center; align-items: center; z-index: 1000; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+        /* 圖鑑彈出視窗 */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: flex; justify-content: center; align-items: center; z-index: 1000; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
         .modal-overlay.active { opacity: 1; pointer-events: auto; }
         .modal-content { background-color: #1e1e2e; width: 90%; max-width: 800px; max-height: 90vh; overflow-y: auto; border-radius: 12px; padding: 20px; border: 2px solid #89b4fa; position: relative; }
         .close-btn { position: absolute; top: 15px; right: 20px; font-size: 24px; color: #f38ba8; cursor: pointer; font-weight: bold; }
         .book-section { margin-bottom: 20px; background-color: #313244; padding: 15px; border-radius: 8px; }
         .book-section h3 { color: #89b4fa; margin-top: 0; border-bottom: 1px solid #585b70; padding-bottom: 5px; }
         table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 14px; }
-        th, td { padding: 8px; text-align: left; border-bottom: 1px solid #45475a; }
+        th, td { padding: 8px; text-align: left; border-bottom: 1px solid #45475a; vertical-align: middle; }
         th { color: #a6e3a1; }
         .highlight { color: #eba0ac; font-weight: bold; }
+        .book-img { width: 45px; height: 45px; object-fit: cover; border-radius: 5px; border: 1px solid #585b70; margin-right: 10px; }
+        .book-item { display: flex; align-items: center; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -126,7 +133,8 @@
     
     <div class="battle-arena">
         <div class="character-status p1-side">
-            <h3 style="color: #a6e3a1; margin: 0;">🟢 玩家</h3>
+            <h3 style="color: #a6e3a1; margin: 0 0 10px 0;">🟢 玩家</h3>
+            <div class="equip-images" id="p1-images"></div>
             <div id="p1-equip-text" style="font-size: 12px; color: #a6adc8; margin-bottom: 10px;"></div>
             <div class="hp-bar-bg"><div class="hp-bar-fill" id="p1-hp-bar"></div></div>
             <div class="stats-row">
@@ -137,7 +145,8 @@
         </div>
         
         <div class="character-status p2-side">
-            <h3 style="color: #f38ba8; margin: 0;">🔴 電腦</h3>
+            <h3 style="color: #f38ba8; margin: 0 0 10px 0;">🔴 電腦</h3>
+            <div class="equip-images" id="p2-images"></div>
             <div id="p2-equip-text" style="font-size: 12px; color: #a6adc8; margin-bottom: 10px;"></div>
             <div class="hp-bar-bg"><div class="hp-bar-fill" id="p2-hp-bar"></div></div>
             <div class="stats-row">
@@ -149,6 +158,7 @@
     </div>
 
     <div class="action-area">
+        <button class="btn-book" style="margin-bottom: 15px;" onclick="toggleBook()">📖 戰鬥中查看圖鑑</button>
         <div id="dice-visual" class="dice-display">🎲</div>
         <div id="player-skills-container"></div>
         <button id="btn-roll" class="btn-roll" onclick="playerRoll()">🎲 擲骰攻擊</button>
@@ -164,54 +174,44 @@
 <div class="modal-overlay" id="book-modal">
     <div class="modal-content">
         <div class="close-btn" onclick="toggleBook()">✖</div>
-        <h2 style="color: #f9e2af;">📖 營隊裝備圖鑑</h2>
+        <h2 style="color: #f9e2af; margin-top: 0;">📖 營隊裝備圖鑑</h2>
         
-        <div class="book-section">
-            <h3>套裝共鳴效果 (A+ 專屬)</h3>
-            <p style="font-size: 14px; color: #a6adc8;">※ 裝備同系列 2 件或 3 件 A+ 裝備，將自動獲得強大的隱藏屬性加成。</p>
-            <table>
-                <tr><th>套裝系列</th><th>2 件套效果</th><th>3 件套效果 (終極型態)</th></tr>
-                <tr><td>🌌 <b>星際</b> (星河/星辰/星隕)</td><td>最大血量 <span class="highlight">+6</span></td><td>最大血量 <span class="highlight">+16</span></td></tr>
-                <tr><td>🛡️ <b>神界</b> (神皇/神域/神罰)</td><td>常駐護盾 <span class="highlight">+1</span></td><td>常駐護盾 <span class="highlight">+3</span></td></tr>
-                <tr><td>🔥 <b>深淵</b> (寂滅/深淵/終焉)</td><td>所有傷害 <span class="highlight">+1</span></td><td>所有傷害 <span class="highlight">+5</span></td></tr>
-            </table>
-        </div>
-
         <div class="book-section">
             <h3>🗡️ 武器庫 (傷害判定陣列)</h3>
             <table>
-                <tr><th>武器名稱</th><th>階級</th><th>傷害骰子 (機率均等)</th><th>特性簡述</th></tr>
-                <tr><td>木劍</td><td>F</td><td>1, 2, 2, 3, 3, 4</td><td>極度微弱</td></tr>
-                <tr><td>聖誕樹</td><td>C-</td><td>5, 5, 5, 5, 6, 6</td><td>穩定平庸</td></tr>
-                <tr><td>啞鈴</td><td>C-</td><td>3, 5, 7, 9, 11, <span class="highlight">-3</span></td><td>高風險低報酬</td></tr>
-                <tr><td>撞球桌</td><td>B</td><td>5, 6, 6, 7, 7, 8</td><td>穩定優良</td></tr>
-                <tr><td>炙杖</td><td>B</td><td><span class="highlight">-5</span>, <span class="highlight">25</span>, <span class="highlight">-5</span>, 15, -1, 8</td><td>極端賭狗</td></tr>
-                <tr><td>歐兜拜</td><td>B</td><td>0, 0, 0, 8, 11, 14</td><td>要嘛沒傷要嘛痛</td></tr>
-                <tr><td>星隕之刃</td><td>A+ (星際)</td><td>9, 10, 10, 11, 11, 12</td><td>全遊戲最穩定高傷</td></tr>
-                <tr><td>神罰之刃</td><td>A+ (神界)</td><td>6, 7, 7, 9, 15, 18</td><td>保底不自殘爆發</td></tr>
-                <tr><td>終焉之刃</td><td>A+ (深淵)</td><td><span class="highlight">-4</span>, <span class="highlight">-4</span>, 12, 12, 19, <span class="highlight">35</span></td><td>致命自殘與毀滅斬殺</td></tr>
+                <tr><th>武器圖示與名稱</th><th>階級</th><th>傷害骰子 (機率均等)</th><th>特性簡述</th></tr>
+                <tr><td><div class="book-item"><img src="木劍.png" class="book-img"> 木劍</div></td><td>F</td><td>1, 2, 2, 3, 3, 4</td><td>極度微弱</td></tr>
+                <tr><td><div class="book-item"><img src="聖誕樹.jpg" class="book-img"> 聖誕樹</div></td><td>C-</td><td>5, 5, 5, 5, 6, 6</td><td>穩定平庸</td></tr>
+                <tr><td><div class="book-item"><img src="啞鈴.jpg" class="book-img"> 啞鈴</div></td><td>C-</td><td>3, 5, 7, 9, 11, <span class="highlight">-3</span></td><td>高風險低報酬</td></tr>
+                <tr><td><div class="book-item"><img src="撞球桌.jpg" class="book-img"> 撞球桌</div></td><td>B</td><td>5, 6, 6, 7, 7, 8</td><td>穩定優良</td></tr>
+                <tr><td><div class="book-item"><img src="炙杖.jpg" class="book-img"> 炙杖</div></td><td>B</td><td><span class="highlight">-5</span>, <span class="highlight">25</span>, <span class="highlight">-5</span>, 15, -1, 8</td><td>極端賭狗</td></tr>
+                <tr><td><div class="book-item"><img src="歐兜拜.PNG" class="book-img"> 歐兜拜</div></td><td>B</td><td>0, 0, 0, 8, 11, 14</td><td>要嘛沒傷要嘛痛</td></tr>
+                <tr><td><div class="book-item"><img src="星隕之刃.png" class="book-img"> 星隕之刃</div></td><td>A+ (星際)</td><td>9, 10, 10, 11, 11, 12</td><td>全遊戲最穩定高傷</td></tr>
+                <tr><td><div class="book-item"><img src="神罰之刃.png" class="book-img"> 神罰之刃</div></td><td>A+ (神界)</td><td>6, 7, 7, 9, 15, 18</td><td>保底不自殘爆發</td></tr>
+                <tr><td><div class="book-item"><img src="終焉之刃.png" class="book-img"> 終焉之刃</div></td><td>A+ (深淵)</td><td><span class="highlight">-4</span>, <span class="highlight">-4</span>, 12, 12, 19, <span class="highlight">35</span></td><td>致命自殘與毀滅斬殺</td></tr>
             </table>
         </div>
 
         <div class="book-section">
-            <h3>👕 盔甲與 🛡️ 盾牌 (大招技能)</h3>
+            <h3>👕 盔甲與 🛡️ 盾牌 (A+大招與套裝)</h3>
+            <p style="font-size: 14px; color: #a6adc8;">※ A+ 裝備自帶主動大招。同系列湊齊 2 件或 3 件將自動觸發隱藏套裝加成。</p>
             <table>
-                <tr><th>裝備名稱</th><th>部位 / 基礎數值</th><th>專屬技能效果 (每局限用一次)</th></tr>
-                <tr><td>F/C/B 階盔甲</td><td>盔甲 (+1 ~ +4 甲)</td><td>無特殊效果，提供基礎血量。</td></tr>
-                <tr><td>F/C/B 階盾牌</td><td>盾牌 (+0 ~ +2 盾)</td><td>無特殊效果，提供每回合固定減傷。</td></tr>
-                <tr><td>星河聖甲</td><td>盔甲 (+7 甲)</td><td><b>【星河聖甲】</b>血量 ≤ 50% 可發動，瞬間回復 10 點生命。</td></tr>
-                <tr><td>星辰障壁</td><td>盾牌 (+3 盾)</td><td><b>【星辰障壁】</b>血量 ≤ 45% 可發動，護盾額外 +4，持續兩回合。</td></tr>
-                <tr><td>神皇遺甲</td><td>盔甲 (+7 甲)</td><td><b>【神皇遺甲】</b>第三回合必定發動，使對手暈眩一回合。</td></tr>
-                <tr><td>神域之門</td><td>盾牌 (+3 盾)</td><td><b>【神域之門】</b>被動技，遭受致死攻擊時，強制保留 1 滴血不死。</td></tr>
-                <tr><td>寂滅聖鎧</td><td>盔甲 (+7 甲)</td><td><b>【寂滅聖鎧】</b>血量 ≤ 18 可發動，完全免疫對手當回合攻擊。</td></tr>
-                <tr><td>深淵封印</td><td>盾牌 (+3 盾)</td><td><b>【深淵封印】</b>自身血量 ≤ 12 或敵方 ≤ 13，下次傷害額外 +10。</td></tr>
+                <tr><th>裝備圖示與名稱</th><th>所屬派系與效果</th><th>專屬大招技能 (每局限用一次)</th></tr>
+                <tr><td><div class="book-item"><img src="星河聖甲.png" class="book-img"> 星河聖甲</div></td><td rowspan="2"><b>【星際套裝】</b><br>2件: 最大血量 <span class="highlight">+6</span><br>3件: 最大血量 <span class="highlight">+16</span></td><td>血量 ≤ 50% 發動，瞬間回復 10 點生命。</td></tr>
+                <tr><td><div class="book-item"><img src="星辰障壁.png" class="book-img"> 星辰障壁</div></td><td>血量 ≤ 45% 發動，護盾額外 +4，持續兩回合。</td></tr>
+                
+                <tr><td><div class="book-item"><img src="神皇遺甲.png" class="book-img"> 神皇遺甲</div></td><td rowspan="2"><b>【神界套裝】</b><br>2件: 常駐護盾 <span class="highlight">+1</span><br>3件: 常駐護盾 <span class="highlight">+3</span></td><td>第三回合必定發動，使對手暈眩一回合。</td></tr>
+                <tr><td><div class="book-item"><img src="神域之門.png" class="book-img"> 神域之門</div></td><td>被動技，遭受致死攻擊時，強制保留 1 滴血不死。</td></tr>
+                
+                <tr><td><div class="book-item"><img src="寂滅聖鎧.png" class="book-img"> 寂滅聖鎧</div></td><td rowspan="2"><b>【深淵套裝】</b><br>2件: 所有傷害 <span class="highlight">+1</span><br>3件: 所有傷害 <span class="highlight">+5</span></td><td>血量 ≤ 18 發動，完全免疫對手當回合攻擊。</td></tr>
+                <tr><td><div class="book-item"><img src="深淵封印.png" class="book-img"> 深淵封印</div></td><td>自身血量 ≤ 12 或敵方 ≤ 13，下次傷害額外 +10。</td></tr>
             </table>
         </div>
     </div>
 </div>
 
 <script>
-// --- 數值庫 ---
+// --- 數值與圖片對應庫 ---
 const WEAPONS = {
     "木劍": [1, 2, 2, 3, 3, 4], "聖誕樹": [5, 5, 5, 5, 6, 6], "啞鈴": [3, 5, 7, 9, 11, -3],
     "撞球桌": [5, 6, 6, 7, 7, 8], "炙杖": [-5, 25, -5, 15, -1, 8], "歐兜拜": [0, 0, 0, 8, 11, 14],
@@ -231,9 +231,23 @@ const SETS = {
     "神界": ["神皇遺甲", "神域之門", "神罰之刃"]
 };
 
+// 裝備實體圖片對應表
+const IMG_MAP = {
+    "木劍": "木劍.png", "聖誕樹": "聖誕樹.jpg", "啞鈴": "啞鈴.jpg",
+    "撞球桌": "撞球桌.jpg", "炙杖": "炙杖.jpg", "歐兜拜": "歐兜拜.PNG",
+    "星隕之刃": "星隕之刃.png", "終焉之刃": "終焉之刃.png", "神罰之刃": "神罰之刃.png",
+    "皮衣": "皮甲.png", "山甲": "穿山甲.png", "緊身吊嘎 + 四角內褲": "緊身吊嘎+四角內褲.jpg",
+    "女僕裝": "女僕裝.jpg", "8+9 三件套": "8+9套裝.jpg",
+    "星河聖甲": "星河聖甲.png", "寂滅聖鎧": "寂滅聖鎧.png", "神皇遺甲": "神皇遺甲.png",
+    "執秘小心肝": "執秘小心肝.png", "好好再見，不負遇見": "好好相見，不負相見.png", 
+    "Calculus metric version 9e": "Calculus Metric Version 9e.jpg", 
+    "吸牛盾": "吸牛頓.jpg", "防彈少年團": "防彈少年團.jpg",
+    "星辰障壁": "星辰障壁.png", "深淵封印": "深淵封印.png", "神域之門": "神域之門.png"
+};
+
 const POOLS = {
     ARMOR: { A: ["星河聖甲", "寂滅聖鎧", "神皇遺甲"], ALL: Object.keys(ARMOR_STATS) },
-    SHIELD: { A: ["星辰障壁", "深淵封印", "神域之門"], ALL: Object.keys(SHIELD_STATS) },
+    SHIELD: { A: ["星辰障壁", "深淵封印", "神域之門"], ALL: Object.keys(SHIELD_STATS).filter(s => s !== "無") },
     WEAPON: { A: ["星隕之刃", "終焉之刃", "神罰之刃"], B: ["撞球桌", "炙杖", "歐兜拜"], C: ["聖誕樹", "啞鈴"], ALL: Object.keys(WEAPONS) }
 };
 
@@ -251,7 +265,13 @@ function parseSelection(type, val) {
     }
 }
 
-// 圖鑑開關
+function getImgHtml(name) {
+    if (name === "無" || !name) return `<div class="equip-img no-img">無盾牌</div>`;
+    let src = IMG_MAP[name];
+    if (!src) return `<div class="equip-img no-img">無圖</div>`;
+    return `<img src="${src}" class="equip-img" alt="${name}" title="${name}" onerror="this.style.display='none'">`;
+}
+
 function toggleBook() {
     const modal = document.getElementById("book-modal");
     modal.classList.toggle("active");
@@ -260,6 +280,8 @@ function toggleBook() {
 class Character {
     constructor(id, name, armor_name, shield_name, weapon_name, is_ai) {
         this.id = id; this.name = name; this.is_ai = is_ai;
+        this.armor_name = armor_name;
+        this.shield_name = shield_name;
         this.weapon_name = weapon_name;
         this.weapon = WEAPONS[weapon_name];
         
@@ -344,6 +366,10 @@ function startGame() {
     p1 = new Character("p1", "玩家", p1_a, p1_s, p1_w, false);
     p2 = new Character("p2", "電腦", p2_a, p2_s, p2_w, true);
     
+    // 渲染雙方裝備圖片
+    document.getElementById("p1-images").innerHTML = getImgHtml(p1.armor_name) + getImgHtml(p1.shield_name) + getImgHtml(p1.weapon_name);
+    document.getElementById("p2-images").innerHTML = getImgHtml(p2.armor_name) + getImgHtml(p2.shield_name) + getImgHtml(p2.weapon_name);
+
     document.getElementById("p1-equip-text").innerText = p1.equip_text;
     document.getElementById("p2-equip-text").innerText = p2.equip_text;
 
