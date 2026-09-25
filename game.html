@@ -44,6 +44,576 @@
         
         .skill-btn { padding: 10px 20px; font-size: 16px; font-weight: bold; background-color: #f9e2af; color: #11111b; border: none; border-radius: 5px; cursor: pointer; margin: 5px; transition: 0.2s; }
         .skill-btn:hover { background-color: #fae3b0; transform: scale(1.05); }
+        .skill-btn:disabled { background-color: #45475a; color: #7f849c; cursor: not-allowed; transform: none; border: 1px solid #313244; }
+        .btn-roll { background-color: #eba0ac; color: #11111b; font-size: 20px; padding: 15px 30px; margin-top: 10px; border-radius: 8px; font-weight: bold; cursor: pointer; border: none; }
+        .btn-roll:hover { background-color: #f38ba8; }
+        .btn-roll:disabled { background-color: #585b70; cursor: not-allowed; }
+
+        /* 戰鬥紀錄 */
+        .combat-log { height: 250px; overflow-y: auto; background-color: #11111b; padding: 15px; border-radius: 8px; font-family: monospace; font-size: 15px; line-height: 1.6; border-left: 4px solid #89b4fa; }
+        .log-turn { color: #89b4fa; font-weight: bold; margin-top: 10px; }
+        .log-p1 { color: #a6e3a1; }
+        .log-p2 { color: #f38ba8; }
+        .log-skill { color: #f9e2af; font-weight: bold; }
+        .log-dmg { color: #eba0ac; font-weight: bold; }
+
+        /* 圖鑑彈出視窗 */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: flex; justify-content: center; align-items: center; z-index: 1000; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+        .modal-content { background-color: #1e1e2e; width: 90%; max-width: 800px; max-height: 90vh; overflow-y: auto; border-radius: 12px; padding: 20px; border: 2px solid #89b4fa; position: relative; }
+        .close-btn { position: absolute; top: 15px; right: 20px; font-size: 24px; color: #f38ba8; cursor: pointer; font-weight: bold; }
+        .book-section { margin-bottom: 20px; background-color: #313244; padding: 15px; border-radius: 8px; }
+        .book-section h3 { color: #89b4fa; margin-top: 0; border-bottom: 1px solid #585b70; padding-bottom: 5px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 14px; }
+        th, td { padding: 8px; text-align: left; border-bottom: 1px solid #45475a; vertical-align: middle; }
+        th { color: #a6e3a1; }
+        .highlight { color: #eba0ac; font-weight: bold; }
+        .book-img { width: 45px; height: 45px; object-fit: cover; border-radius: 5px; border: 1px solid #585b70; margin-right: 10px; }
+        .book-item { display: flex; align-items: center; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<!-- 設定畫面 -->
+<div class="container" id="screen-setup">
+    <h1>⚔️ 卡牌對戰系統 (PVE)</h1>
+    
+    <button class="btn-book" onclick="toggleBook()">📖 開啟裝備圖鑑</button>
+
+    <div class="flex-box">
+        <div class="player-card" id="setup-p1">
+            <h3 style="color: #a6e3a1; margin-top: 0;">🟢 玩家 (你)</h3>
+            <label>👕 盔甲 (決定血量: 20+甲)</label>
+            <select id="p1-armor">
+                <optgroup label="🎲 隨機選項"><option value="RANDOM_ALL">🎲 全部隨機</option><option value="RANDOM_A">🎲 A+ 隨機</option></optgroup>
+                <optgroup label="特別 A+ (7甲 | 附帶技能)"><option value="星河聖甲">星河聖甲</option><option value="寂滅聖鎧">寂滅聖鎧</option><option value="神皇遺甲">神皇遺甲</option></optgroup>
+                <optgroup label="進階 B (4甲)"><option value="女僕裝">女僕裝</option><option value="營服">營服</option><option value="8+9 三件套">8+9 三件套</option></optgroup>
+                <optgroup label="基本 C- (2甲)"><option value="山甲">山甲</option><option value="緊身吊嘎 + 四角內褲">緊身吊嘎 + 四角內褲</option></optgroup>
+                <optgroup label="初始 F (1甲)"><option value="皮衣">皮衣</option></optgroup>
+            </select>
+            <label>🛡️ 盾牌 (決定每回減傷)</label>
+            <select id="p1-shield">
+                <optgroup label="🎲 隨機選項"><option value="RANDOM_ALL">🎲 全部隨機</option><option value="RANDOM_A">🎲 A+ 隨機</option></optgroup>
+                <optgroup label="特別 A+ (3盾 | 附帶技能)"><option value="星辰障壁">星辰障壁</option><option value="深淵封印">深淵封印</option><option value="神域之門">神域之門</option></optgroup>
+                <optgroup label="進階 B (2盾)"><option value="Calculus metric version 9e">Calculus metric version 9e</option><option value="吸牛盾">吸牛盾</option><option value="防彈少年團">防彈少年團</option></optgroup>
+                <optgroup label="基本 C- (1盾)"><option value="執秘小心肝">執秘小心肝</option><option value="好好再見，不負遇見">好好再見，不負遇見</option></optgroup>
+                <optgroup label="初始 F (0盾)"><option value="無">無盾牌</option></optgroup>
+            </select>
+            <label>🗡️ 武器</label>
+            <select id="p1-weapon">
+                <optgroup label="🎲 隨機選項"><option value="RANDOM_ALL">🎲 全部隨機</option><option value="RANDOM_A">🎲 A+ 隨機</option><option value="RANDOM_B">🎲 B 階隨機</option><option value="RANDOM_C">🎲 C- 階隨機</option></optgroup>
+                <optgroup label="特別 A+"><option value="星隕之刃">星隕之刃</option><option value="終焉之刃">終焉之刃</option><option value="神罰之刃">神罰之刃</option></optgroup>
+                <optgroup label="進階 B"><option value="撞球桌">撞球桌</option><option value="炙杖">炙杖</option><option value="歐兜拜">歐兜拜</option></optgroup>
+                <optgroup label="基本 C-"><option value="聖誕樹">聖誕樹</option><option value="啞鈴">啞鈴</option></optgroup>
+                <optgroup label="初始 F"><option value="木劍">木劍</option></optgroup>
+            </select>
+        </div>
+        
+        <div class="player-card" id="setup-p2">
+            <h3 style="color: #f38ba8; margin-top: 0;">🔴 電腦 (AI)</h3>
+            <label>👕 盔甲 (決定血量: 20+甲)</label>
+            <select id="p2-armor">
+                <optgroup label="🎲 隨機選項"><option value="RANDOM_ALL" selected>🎲 全部隨機</option><option value="RANDOM_A">🎲 A+ 隨機</option></optgroup>
+                <optgroup label="特別 A+ (7甲 | 附帶技能)"><option value="星河聖甲">星河聖甲</option><option value="寂滅聖鎧">寂滅聖鎧</option><option value="神皇遺甲">神皇遺甲</option></optgroup>
+                <optgroup label="進階 B (4甲)"><option value="女僕裝">女僕裝</option><option value="營服">營服</option><option value="8+9 三件套">8+9 三件套</option></optgroup>
+                <optgroup label="基本 C- (2甲)"><option value="山甲">山甲</option><option value="緊身吊嘎 + 四角內褲">緊身吊嘎 + 四角內褲</option></optgroup>
+                <optgroup label="初始 F (1甲)"><option value="皮衣">皮衣</option></optgroup>
+            </select>
+            <label>🛡️ 盾牌 (決定每回減傷)</label>
+            <select id="p2-shield">
+                <optgroup label="🎲 隨機選項"><option value="RANDOM_ALL" selected>🎲 全部隨機</option><option value="RANDOM_A">🎲 A+ 隨機</option></optgroup>
+                <optgroup label="特別 A+ (3盾 | 附帶技能)"><option value="星辰障壁">星辰障壁</option><option value="深淵封印">深淵封印</option><option value="神域之門">神域之門</option></optgroup>
+                <optgroup label="進階 B (2盾)"><option value="Calculus metric version 9e">Calculus metric version 9e</option><option value="吸牛盾">吸牛盾</option><option value="防彈少年團">防彈少年團</option></optgroup>
+                <optgroup label="基本 C- (1盾)"><option value="執秘小心肝">執秘小心肝</option><option value="好好再見，不負遇見">好好再見，不負遇見</option></optgroup>
+                <optgroup label="初始 F (0盾)"><option value="無">無盾牌</option></optgroup>
+            </select>
+            <label>🗡️ 武器</label>
+            <select id="p2-weapon">
+                <optgroup label="🎲 隨機選項"><option value="RANDOM_ALL" selected>🎲 全部隨機</option><option value="RANDOM_A">🎲 A+ 隨機</option><option value="RANDOM_B">🎲 B 階隨機</option><option value="RANDOM_C">🎲 C- 階隨機</option></optgroup>
+                <optgroup label="特別 A+"><option value="星隕之刃">星隕之刃</option><option value="終焉之刃">終焉之刃</option><option value="神罰之刃">神罰之刃</option></optgroup>
+                <optgroup label="進階 B"><option value="撞球桌">撞球桌</option><option value="炙杖">炙杖</option><option value="歐兜拜">歐兜拜</option></optgroup>
+                <optgroup label="基本 C-"><option value="聖誕樹">聖誕樹</option><option value="啞鈴">啞鈴</option></optgroup>
+                <optgroup label="初始 F"><option value="木劍">木劍</option></optgroup>
+            </select>
+        </div>
+    </div>
+    <button class="btn-main" onclick="startGame()">⚔️ 進入戰鬥</button>
+</div>
+
+<!-- 戰鬥畫面 -->
+<div class="container hidden" id="screen-battle">
+    <h2>第 <span id="turn-display">1</span> 回合</h2>
+    
+    <div class="battle-arena">
+        <div class="character-status p1-side">
+            <h3 style="color: #a6e3a1; margin: 0 0 10px 0;">🟢 玩家</h3>
+            <div class="equip-images" id="p1-images"></div>
+            <div id="p1-equip-text" style="font-size: 12px; color: #a6adc8; margin-bottom: 10px;"></div>
+            <div class="hp-bar-bg"><div class="hp-bar-fill" id="p1-hp-bar"></div></div>
+            <div class="stats-row">
+                <span>❤️ <span id="p1-hp">20</span>/<span id="p1-maxhp">20</span></span>
+                <span>🛡️ <span id="p1-shield-val">0</span></span>
+            </div>
+            <div id="p1-buffs" style="color: #f9e2af; font-size: 12px; margin-top: 5px; height: 15px;"></div>
+        </div>
+        
+        <div class="character-status p2-side">
+            <h3 style="color: #f38ba8; margin: 0 0 10px 0;">🔴 電腦</h3>
+            <div class="equip-images" id="p2-images"></div>
+            <div id="p2-equip-text" style="font-size: 12px; color: #a6adc8; margin-bottom: 10px;"></div>
+            <div class="hp-bar-bg"><div class="hp-bar-fill" id="p2-hp-bar"></div></div>
+            <div class="stats-row">
+                <span>❤️ <span id="p2-hp">20</span>/<span id="p2-maxhp">20</span></span>
+                <span>🛡️ <span id="p2-shield-val">0</span></span>
+            </div>
+            <div id="p2-buffs" style="color: #f9e2af; font-size: 12px; margin-top: 5px; height: 15px;"></div>
+        </div>
+    </div>
+
+    <div class="action-area">
+        <button class="btn-book" style="margin-bottom: 15px;" onclick="toggleBook()">📖 戰鬥中查看圖鑑</button>
+        <div id="dice-visual" class="dice-display">🎲</div>
+        <div id="player-skills-container"></div>
+        <button id="btn-roll" class="btn-roll" onclick="playerRoll()">🎲 擲骰攻擊</button>
+        <button id="btn-restart" class="btn-main hidden" onclick="location.reload()" style="margin-top: 10px; background-color: #a6e3a1;">🔄 再來一局</button>
+    </div>
+
+    <div class="combat-log" id="combat-log">
+        <div>系統：戰鬥開始！準備迎戰！</div>
+    </div>
+</div>
+
+<!-- 圖鑑彈出視窗 -->
+<div class="modal-overlay" id="book-modal">
+    <div class="modal-content">
+        <div class="close-btn" onclick="toggleBook()">✖</div>
+        <h2 style="color: #f9e2af; margin-top: 0;">📖 營隊裝備圖鑑</h2>
+        
+        <div class="book-section">
+            <h3>🗡️ 武器庫 (傷害判定陣列)</h3>
+            <table>
+                <tr><th>武器圖示與名稱</th><th>階級</th><th>傷害骰子 (機率均等)</th><th>特性簡述</th></tr>
+                <tr><td><div class="book-item"><img src="img/sword_wood.jpg" class="book-img"> 木劍</div></td><td>F</td><td>1, 2, 2, 3, 3, 4</td><td>極度微弱</td></tr>
+                <tr><td><div class="book-item"><img src="img/sword_tree.jpg" class="book-img"> 聖誕樹</div></td><td>C-</td><td>5, 5, 5, 5, 6, 6</td><td>穩定平庸</td></tr>
+                <tr><td><div class="book-item"><img src="img/sword_dumbbell.jpg" class="book-img"> 啞鈴</div></td><td>C-</td><td>3, 5, 7, 9, 11, <span class="highlight">-3</span></td><td>高風險低報酬</td></tr>
+                <tr><td><div class="book-item"><img src="img/sword_pool.jpg" class="book-img"> 撞球桌</div></td><td>B</td><td>5, 6, 6, 7, 7, 8</td><td>穩定優良</td></tr>
+                <tr><td><div class="book-item"><img src="img/sword_fire.jpg" class="book-img"> 炙杖</div></td><td>B</td><td><span class="highlight">-5</span>, <span class="highlight">25</span>, <span class="highlight">-5</span>, 15, -1, 8</td><td>極端賭狗</td></tr>
+                <tr><td><div class="book-item"><img src="img/sword_moto.jpg" class="book-img"> 歐兜拜</div></td><td>B</td><td>0, 0, 0, 8, 11, 14</td><td>要嘛沒傷要嘛痛</td></tr>
+                <tr><td><div class="book-item"><img src="img/sword_star.jpg" class="book-img"> 星隕之刃</div></td><td>A+ (星際)</td><td>9, 10, 10, 11, 11, 12</td><td>全遊戲最穩定高傷</td></tr>
+                <tr><td><div class="book-item"><img src="img/sword_divine.jpg" class="book-img"> 神罰之刃</div></td><td>A+ (神界)</td><td>6, 7, 7, 9, 15, 18</td><td>保底不自殘爆發</td></tr>
+                <tr><td><div class="book-item"><img src="img/sword_abyss.jpg" class="book-img"> 終焉之刃</div></td><td>A+ (深淵)</td><td><span class="highlight">-4</span>, <span class="highlight">-4</span>, 12, 12, 19, <span class="highlight">35</span></td><td>致命自殘與毀滅斬殺</td></tr>
+            </table>
+        </div>
+
+        <div class="book-section">
+            <h3>👕 盔甲與 🛡️ 盾牌 (A+大招與套裝)</h3>
+            <p style="font-size: 14px; color: #a6adc8;">※ 玩家可以主動選擇發動時機（每局限用一次）。同系列裝備湊齊將自動觸發隱藏套裝加成。</p>
+            <table>
+                <tr><th>裝備圖示與名稱</th><th>所屬派系與效果</th><th>專屬大招技能 (玩家自由發動)</th></tr>
+                <tr><td><div class="book-item"><img src="img/armor_star.jpg" class="book-img"> 星河聖甲</div></td><td rowspan="2"><b>【星際套裝】</b><br>2件: 最大血量 <span class="highlight">+6</span><br>3件: 最大血量 <span class="highlight">+16</span></td><td>回復 10 點生命。</td></tr>
+                <tr><td><div class="book-item"><img src="img/shield_star.jpg" class="book-img"> 星辰障壁</div></td><td>護盾額外 +4，持續兩回合。</td></tr>
+                
+                <tr><td><div class="book-item"><img src="img/armor_divine.jpg" class="book-img"> 神皇遺甲</div></td><td rowspan="2"><b>【神界套裝】</b><br>2件: 常駐護盾 <span class="highlight">+1</span><br>3件: 常駐護盾 <span class="highlight">+3</span></td><td>使對手暈眩一回合，無法攻擊。</td></tr>
+                <tr><td><div class="book-item"><img src="img/shield_divine.jpg" class="book-img"> 神域之門</div></td><td><b>[被動技]</b> 遭受致死攻擊時，強制保留 1 滴血不死。</td></tr>
+                
+                <tr><td><div class="book-item"><img src="img/armor_abyss.jpg" class="book-img"> 寂滅聖鎧</div></td><td rowspan="2"><b>【深淵套裝】</b><br>2件: 所有傷害 <span class="highlight">+1</span><br>3件: 所有傷害 <span class="highlight">+5</span></td><td>完全免疫對手當回合的攻擊。</td></tr>
+                <tr><td><div class="book-item"><img src="img/shield_abyss.jpg" class="book-img"> 深淵封印</div></td><td>下次攻擊傷害強制額外 +10。</td></tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+// --- 數值與圖片對應庫 ---
+const WEAPONS = {
+    "木劍": [1, 2, 2, 3, 3, 4], "聖誕樹": [5, 5, 5, 5, 6, 6], "啞鈴": [3, 5, 7, 9, 11, -3],
+    "撞球桌": [5, 6, 6, 7, 7, 8], "炙杖": [-5, 25, -5, 15, -1, 8], "歐兜拜": [0, 0, 0, 8, 11, 14],
+    "星隕之刃": [9, 10, 10, 11, 11, 12], "終焉之刃": [-4, -4, 12, 12, 19, 35], "神罰之刃": [6, 7, 7, 9, 15, 18]
+};
+const ARMOR_STATS = {
+    "皮衣": 1, "山甲": 2, "緊身吊嘎 + 四角內褲": 2, "女僕裝": 4, "營服": 4, "8+9 三件套": 4,
+    "星河聖甲": 7, "寂滅聖鎧": 7, "神皇遺甲": 7
+};
+const SHIELD_STATS = {
+    "無": 0, "執秘小心肝": 1, "好好再見，不負遇見": 1, "Calculus metric version 9e": 2, "吸牛盾": 2, "防彈少年團": 2,
+    "星辰障壁": 3, "深淵封印": 3, "神域之門": 3
+};
+const SETS = {
+    "星際": ["星河聖甲", "星辰障壁", "星隕之刃"],
+    "深淵": ["寂滅聖鎧", "深淵封印", "終焉之刃"],
+    "神界": ["神皇遺甲", "神域之門", "神罰之刃"]
+};
+
+// 裝備實體圖片對應表
+const IMG_MAP = {
+    "木劍": "img/sword_wood.jpg", "聖誕樹": "img/sword_tree.jpg", "啞鈴": "img/sword_dumbbell.jpg",
+    "撞球桌": "img/sword_pool.jpg", "炙杖": "img/sword_fire.jpg", "歐兜拜": "img/sword_moto.jpg",
+    "星隕之刃": "img/sword_star.jpg", "終焉之刃": "img/sword_abyss.jpg", "神罰之刃": "img/sword_divine.jpg",
+    
+    "皮衣": "img/armor_leather.jpg", "山甲": "img/armor_pangolin.jpg", "緊身吊嘎 + 四角內褲": "img/armor_tanktop.jpg",
+    "女僕裝": "img/armor_maid.jpg", "8+9 三件套": "img/armor_89.jpg",
+    "星河聖甲": "img/armor_star.jpg", "寂滅聖鎧": "img/armor_abyss.jpg", "神皇遺甲": "img/armor_divine.jpg",
+    
+    "執秘小心肝": "img/shield_liver.jpg", "好好再見，不負遇見": "img/shield_book1.jpg", 
+    "Calculus metric version 9e": "img/shield_calculus.jpg", 
+    "吸牛盾": "img/shield_newton.jpg", "防彈少年團": "img/shield_bts.jpg",
+    "星辰障壁": "img/shield_star.jpg", "深淵封印": "img/shield_abyss.jpg", "神域之門": "img/shield_divine.jpg"
+};
+
+const POOLS = {
+    ARMOR: { A: ["星河聖甲", "寂滅聖鎧", "神皇遺甲"], ALL: Object.keys(ARMOR_STATS) },
+    SHIELD: { A: ["星辰障壁", "深淵封印", "神域之門"], ALL: Object.keys(SHIELD_STATS).filter(s => s !== "無") },
+    WEAPON: { A: ["星隕之刃", "終焉之刃", "神罰之刃"], B: ["撞球桌", "炙杖", "歐兜拜"], C: ["聖誕樹", "啞鈴"], ALL: Object.keys(WEAPONS) }
+};
+
+function getRandomItem(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+function parseSelection(type, val) {
+    if (!val.startsWith("RANDOM_")) return val;
+    if (type === 'armor') return val === "RANDOM_A" ? getRandomItem(POOLS.ARMOR.A) : getRandomItem(POOLS.ARMOR.ALL);
+    if (type === 'shield') return val === "RANDOM_A" ? getRandomItem(POOLS.SHIELD.A) : getRandomItem(POOLS.SHIELD.ALL);
+    if (type === 'weapon') {
+        if (val === "RANDOM_A") return getRandomItem(POOLS.WEAPON.A);
+        if (val === "RANDOM_B") return getRandomItem(POOLS.WEAPON.B);
+        if (val === "RANDOM_C") return getRandomItem(POOLS.WEAPON.C);
+        return getRandomItem(POOLS.WEAPON.ALL);
+    }
+}
+
+function getImgHtml(name) {
+    if (name === "無" || !name) return `<div class="equip-img no-img">無盾牌</div>`;
+    let src = IMG_MAP[name];
+    if (!src) return `<div class="equip-img no-img">無圖</div>`;
+    return `<img src="${src}" class="equip-img" alt="${name}" title="${name}" onerror="this.style.display='none'">`;
+}
+
+function toggleBook() {
+    const modal = document.getElementById("book-modal");
+    modal.classList.toggle("active");
+}
+
+class Character {
+    constructor(id, name, armor_name, shield_name, weapon_name, is_ai) {
+        this.id = id; this.name = name; this.is_ai = is_ai;
+        this.armor_name = armor_name;
+        this.shield_name = shield_name;
+        this.weapon_name = weapon_name;
+        this.weapon = WEAPONS[weapon_name];
+        
+        let armor_val = ARMOR_STATS[armor_name];
+        let shield_val = SHIELD_STATS[shield_name];
+        
+        this.skills = [];
+        let equip_list = [armor_name, shield_name, weapon_name];
+        Object.values(SETS).flat().forEach(item => { if (equip_list.includes(item)) this.skills.push(item); });
+
+        let star_c = equip_list.filter(i => SETS["星際"].includes(i)).length;
+        let abyss_c = equip_list.filter(i => SETS["深淵"].includes(i)).length;
+        let divine_c = equip_list.filter(i => SETS["神界"].includes(i)).length;
+
+        let set_hp = star_c >= 2 ? (star_c === 3 ? 16 : 6) : 0;
+        let set_shield = divine_c >= 2 ? (divine_c === 3 ? 3 : 1) : 0;
+        this.set_sword = abyss_c >= 2 ? (abyss_c === 3 ? 5 : 1) : 0;
+
+        this.max_hp = 20 + armor_val + set_hp;
+        this.hp = this.max_hp;
+        this.base_shield = shield_val + set_shield;
+        this.shield = this.base_shield;
+        
+        this.used_skills = new Set();
+        this.shield_buff_turns = 0;
+        this.invincible = false;
+        this.skip_turn = false;
+        this.abyss_seal_active = false;
+        this.equip_text = `${armor_name} | ${shield_name} | ${weapon_name}`;
+    }
+    is_alive() { return this.hp > 0; }
+}
+
+let p1, p2, turn_count, current_turn;
+
+function logMsg(msg, cssClass = "") {
+    const log = document.getElementById("combat-log");
+    const div = document.createElement("div");
+    div.className = cssClass;
+    div.innerText = msg;
+    log.appendChild(div);
+    log.scrollTop = log.scrollHeight;
+}
+
+function updateUI() {
+    document.getElementById("p1-hp").innerText = p1.hp;
+    document.getElementById("p1-maxhp").innerText = p1.max_hp;
+    document.getElementById("p1-shield-val").innerText = p1.shield;
+    document.getElementById("p1-hp-bar").style.width = Math.max(0, (p1.hp / p1.max_hp) * 100) + "%";
+    
+    document.getElementById("p2-hp").innerText = p2.hp;
+    document.getElementById("p2-maxhp").innerText = p2.max_hp;
+    document.getElementById("p2-shield-val").innerText = p2.shield;
+    document.getElementById("p2-hp-bar").style.width = Math.max(0, (p2.hp / p2.max_hp) * 100) + "%";
+    
+    document.getElementById("turn-display").innerText = turn_count;
+
+    let p1_buffs = [];
+    if (p1.invincible) p1_buffs.push("🛡️ 無敵");
+    if (p1.skip_turn) p1_buffs.push("⚡ 暈眩");
+    if (p1.abyss_seal_active) p1_buffs.push("🔥 下次增傷+10");
+    if (p1.shield_buff_turns > 0) p1_buffs.push("🌌 護盾強化");
+    document.getElementById("p1-buffs").innerText = p1_buffs.join(" | ");
+
+    let p2_buffs = [];
+    if (p2.invincible) p2_buffs.push("🛡️ 無敵");
+    if (p2.skip_turn) p2_buffs.push("⚡ 暈眩");
+    if (p2.abyss_seal_active) p2_buffs.push("🔥 下次增傷+10");
+    if (p2.shield_buff_turns > 0) p2_buffs.push("🌌 護盾強化");
+    document.getElementById("p2-buffs").innerText = p2_buffs.join(" | ");
+}
+
+function startGame() {
+    let p1_a = parseSelection('armor', document.getElementById("p1-armor").value);
+    let p1_s = parseSelection('shield', document.getElementById("p1-shield").value);
+    let p1_w = parseSelection('weapon', document.getElementById("p1-weapon").value);
+    
+    let p2_a = parseSelection('armor', document.getElementById("p2-armor").value);
+    let p2_s = parseSelection('shield', document.getElementById("p2-shield").value);
+    let p2_w = parseSelection('weapon', document.getElementById("p2-weapon").value);
+
+    p1 = new Character("p1", "玩家", p1_a, p1_s, p1_w, false);
+    p2 = new Character("p2", "電腦", p2_a, p2_s, p2_w, true);
+    
+    // 渲染雙方裝備圖片
+    document.getElementById("p1-images").innerHTML = getImgHtml(p1.armor_name) + getImgHtml(p1.shield_name) + getImgHtml(p1.weapon_name);
+    document.getElementById("p2-images").innerHTML = getImgHtml(p2.armor_name) + getImgHtml(p2.shield_name) + getImgHtml(p2.weapon_name);
+
+    document.getElementById("p1-equip-text").innerText = p1.equip_text;
+    document.getElementById("p2-equip-text").innerText = p2.equip_text;
+
+    document.getElementById("screen-setup").classList.add("hidden");
+    document.getElementById("screen-battle").classList.remove("hidden");
+    
+    turn_count = 1;
+    current_turn = (Math.random() < 0.5) ? p1 : p2;
+    
+    updateUI();
+    logMsg(`系統：硬幣落下，由 [${current_turn.name}] 取得先攻！`, "log-turn");
+    
+    processTurn();
+}
+
+function processTurn() {
+    updateUI();
+    if (!p1.is_alive() || !p2.is_alive()) return checkGameOver();
+
+    logMsg(`--- 第 ${turn_count} 回合：${current_turn.name} 的回合 ---`, "log-turn");
+    
+    if (current_turn.skip_turn) {
+        logMsg(`${current_turn.name} 處於暈眩狀態，無法行動！`);
+        current_turn.skip_turn = false;
+        endTurn();
+        return;
+    }
+
+    if (current_turn.is_ai) {
+        document.getElementById("btn-roll").disabled = true;
+        setTimeout(aiAction, 1000);
+    } else {
+        document.getElementById("btn-roll").disabled = false;
+        renderPlayerSkills();
+    }
+}
+
+// 玩家技能介面：無發動條件限制，點過即變灰
+function renderPlayerSkills() {
+    const container = document.getElementById("player-skills-container");
+    container.innerHTML = "";
+    
+    // 所有玩家可以主動開啟的技能 (不含神域之門被動)
+    const activeSkills = [
+        { name: "星河聖甲", effect: "回血10" },
+        { name: "寂滅聖鎧", effect: "免疫當次攻擊" },
+        { name: "神皇遺甲", effect: "暈眩對手" },
+        { name: "星辰障壁", effect: "護盾+4(兩回合)" },
+        { name: "深淵封印", effect: "下擊增傷+10" }
+    ];
+
+    activeSkills.forEach(skill => {
+        if (p1.skills.includes(skill.name)) {
+            let btn = document.createElement("button");
+            btn.className = "skill-btn";
+            
+            // 判斷是否已經使用過
+            if (p1.used_skills.has(skill.name)) {
+                btn.disabled = true;
+                btn.innerText = `${skill.name} (已使用)`;
+            } else {
+                btn.innerText = `${skill.name} (${skill.effect})`;
+                btn.onclick = () => { 
+                    useSkill(p1, p2, skill.name); 
+                    renderPlayerSkills(); // 點擊後重新渲染，立刻變灰
+                    updateUI(); 
+                };
+            }
+            container.appendChild(btn);
+        }
+    });
+}
+
+function useSkill(caster, target, skillName) {
+    caster.used_skills.add(skillName); // 標記為已使用
+    let logClass = caster.id === "p1" ? "log-p1" : "log-p2";
+    if (skillName === "星河聖甲") {
+        caster.hp += 10;
+        logMsg(`✨ ${caster.name} 發動【星河聖甲】，回復 10 血！`, "log-skill");
+    } else if (skillName === "寂滅聖鎧") {
+        caster.invincible = true;
+        logMsg(`🛡️ ${caster.name} 發動【寂滅聖鎧】，免疫當次攻擊！`, "log-skill");
+    } else if (skillName === "神皇遺甲") {
+        target.skip_turn = true;
+        logMsg(`⚡ ${caster.name} 發動【神皇遺甲】，對手下回合無法攻擊！`, "log-skill");
+    } else if (skillName === "星辰障壁") {
+        caster.shield = caster.base_shield + 4;
+        caster.shield_buff_turns = 2;
+        logMsg(`🌌 ${caster.name} 發動【星辰障壁】，護盾大幅提升！`, "log-skill");
+    } else if (skillName === "深淵封印") {
+        caster.abyss_seal_active = true;
+        logMsg(`🔥 ${caster.name} 發動【深淵封印】，武器充能，準備斬殺！`, "log-skill");
+    }
+}
+
+// AI 技能邏輯保留智能判斷，避免第一回合全開浪費
+function aiAction() {
+    if (p2.skills.includes("星河聖甲") && !p2.used_skills.has("星河聖甲") && p2.hp <= p2.max_hp * 0.5) useSkill(p2, p1, "星河聖甲");
+    if (p2.skills.includes("寂滅聖鎧") && !p2.used_skills.has("寂滅聖鎧") && p2.hp <= 18) useSkill(p2, p1, "寂滅聖鎧");
+    if (p2.skills.includes("神皇遺甲") && !p2.used_skills.has("神皇遺甲") && turn_count >= 2) useSkill(p2, p1, "神皇遺甲");
+    if (p2.skills.includes("星辰障壁") && !p2.used_skills.has("星辰障壁") && p2.hp <= p2.max_hp * 0.45) useSkill(p2, p1, "星辰障壁");
+    if (p2.skills.includes("深淵封印") && !p2.used_skills.has("深淵封印") && (p1.hp <= 13 || p2.hp <= 12)) useSkill(p2, p1, "深淵封印");
+    
+    updateUI();
+    setTimeout(() => { animateDiceAndAttack(p2, p1); }, 800);
+}
+
+function playerRoll() {
+    document.getElementById("btn-roll").disabled = true;
+    // 讓尚未使用的技能按鈕在擲骰子動畫期間也暫時變灰無法點擊
+    let skillBtns = document.querySelectorAll("#player-skills-container .skill-btn");
+    skillBtns.forEach(btn => btn.disabled = true);
+    
+    animateDiceAndAttack(p1, p2);
+}
+
+function animateDiceAndAttack(attacker, defender) {
+    const diceDiv = document.getElementById("dice-visual");
+    let rollCount = 0;
+    
+    let interval = setInterval(() => {
+        diceDiv.innerText = `🎲 ${attacker.weapon[Math.floor(Math.random()*6)]}`;
+        rollCount++;
+        
+        if (rollCount > 10) {
+            clearInterval(interval);
+            let base_dmg = attacker.weapon[Math.floor(Math.random() * 6)];
+            diceDiv.innerText = `💥 ${base_dmg}`;
+            
+            executeAttack(attacker, defender, base_dmg);
+        }
+    }, 50);
+}
+
+function executeAttack(attacker, defender, base_dmg) {
+    let logClass = attacker.id === "p1" ? "log-p1" : "log-p2";
+    
+    if (base_dmg < 0) {
+        attacker.hp += base_dmg;
+        logMsg(`⚠️ ${attacker.name} 的武器發生反噬！受到了 ${Math.abs(base_dmg)} 點自殘傷害。`, logClass);
+    } else {
+        let bonus_sword = attacker.abyss_seal_active ? 10 : 0;
+        let actual_dmg = Math.max(0, (base_dmg + attacker.set_sword + bonus_sword) - defender.shield);
+        attacker.abyss_seal_active = false;
+
+        logMsg(`⚔️ ${attacker.name} 揮舞 ${attacker.weapon_name}，造成了 ${base_dmg + attacker.set_sword + bonus_sword} 點帳面傷害。`, logClass);
+
+        if (defender.invincible) {
+            actual_dmg = 0;
+            defender.invincible = false;
+            logMsg(`🛡️ 被 ${defender.name} 的無敵狀態完全擋下！`);
+        } else {
+            if (defender.shield > 0) logMsg(`🛡️ 護盾抵擋了 ${Math.min(defender.shield, base_dmg + attacker.set_sword + bonus_sword)} 點傷害。`);
+            defender.hp -= actual_dmg;
+            logMsg(`🩸 ${defender.name} 實際損失了 ${actual_dmg} 點生命值！`, "log-dmg");
+            
+            if (defender.hp <= 0 && defender.skills.includes("神域之門") && !defender.used_skills.has("神域之門")) {
+                defender.hp = 1;
+                defender.used_skills.add("神域之門");
+                logMsg(`⛩️ 奇蹟發生！${defender.name} 的【神域之門】發動，強制鎖血 1 滴！`, "log-skill");
+            }
+        }
+    }
+
+    if (attacker.shield_buff_turns > 0) {
+        attacker.shield_buff_turns -= 1;
+        if (attacker.shield_buff_turns === 0) attacker.shield = attacker.base_shield;
+    }
+
+    setTimeout(endTurn, 1000);
+}
+
+function endTurn() {
+    updateUI();
+    if (!p1.is_alive() || !p2.is_alive()) {
+        checkGameOver();
+        return;
+    }
+    
+    if (current_turn === p1) {
+        current_turn = p2;
+    } else {
+        current_turn = p1;
+        turn_count++;
+        
+        // ☠️ 死鬥疲勞機制 (第 10 回合起觸發)
+        if (turn_count >= 10) {
+            let fatigue_dmg = turn_count - 9;
+            p1.hp -= fatigue_dmg;
+            p2.hp -= fatigue_dmg;
+            logMsg(`☠️ 【死鬥機制】戰鬥拖延過久，場地崩塌！雙方無視護盾受到 ${fatigue_dmg} 點真實傷害！`, "log-dmg");
+            
+            if (!p1.is_alive() || !p2.is_alive()) {
+                updateUI();
+                checkGameOver();
+                return;
+            }
+        }
+    }
+    processTurn();
+}
+
+function checkGameOver() {
+    // 遊戲結束時將技能按鈕區塊清空，僅顯示重新開始按鈕
+    document.getElementById("player-skills-container").innerHTML = "";
+    document.getElementById("btn-roll").classList.add("hidden");
+    document.getElementById("btn-restart").classList.remove("hidden");
+    document.getElementById("dice-visual").innerText = "🏁";
+
+    if (p1.hp <= 0 && p2.hp <= 0) {
+        logMsg("💀 雙方同時倒下，平手！", "log-turn");
+    } else if (p1.hp > 0) {
+        logMsg("🏆 戰鬥結束！【玩家】獲得了最終勝利！", "log-p1");
+    } else {
+        logMsg("🥀 戰鬥結束！【電腦】擊敗了你，再接再厲！", "log-p2");
+    }
+}
+</script>
+</body>
+</html>        /* 裝備圖片顯示 */
+        .equip-images { display: flex; justify-content: center; gap: 10px; margin-bottom: 10px; }
+        .equip-img { width: 60px; height: 60px; object-fit: cover; border-radius: 8px; border: 2px solid #585b70; background-color: #181825; }
+        .no-img { display: flex; align-items: center; justify-content: center; color: #a6adc8; font-size: 12px; font-weight: bold; }
+
+        .action-area { text-align: center; margin-bottom: 20px; padding: 15px; background-color: #181825; border-radius: 8px; border: 1px dashed #585b70; }
+        .dice-display { font-size: 48px; margin: 10px 0; min-height: 70px; display: flex; justify-content: center; align-items: center; }
+        
+        .skill-btn { padding: 10px 20px; font-size: 16px; font-weight: bold; background-color: #f9e2af; color: #11111b; border: none; border-radius: 5px; cursor: pointer; margin: 5px; transition: 0.2s; }
+        .skill-btn:hover { background-color: #fae3b0; transform: scale(1.05); }
         .skill-btn:disabled { background-color: #585b70; color: #a6adc8; cursor: not-allowed; transform: none; }
         .btn-roll { background-color: #eba0ac; color: #11111b; font-size: 20px; padding: 15px 30px; margin-top: 10px; border-radius: 8px; font-weight: bold; cursor: pointer; border: none; }
         .btn-roll:hover { background-color: #f38ba8; }
