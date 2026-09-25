@@ -83,51 +83,57 @@
     <div class="flex-box">
         <div class="player-card" id="setup-p1">
             <h3 style="color: #a6e3a1; margin-top: 0;">🟢 玩家 (你)</h3>
-            <label>👕 盔甲</label>
+            <label>👕 盔甲 (決定血量: 20+甲)</label>
             <select id="p1-armor">
                 <optgroup label="🎲 隨機選項"><option value="RANDOM_ALL">🎲 全部隨機</option><option value="RANDOM_A">🎲 A+ 隨機</option></optgroup>
-                <optgroup label="A+ 階級"><option value="星河聖甲">星河聖甲</option><option value="寂滅聖鎧">寂滅聖鎧</option><option value="神皇遺甲">神皇遺甲</option></optgroup>
-                <optgroup label="B 階級"><option value="女僕裝">女僕裝</option><option value="營服">營服</option><option value="8+9 三件套">8+9 三件套</option></optgroup>
-                <optgroup label="C/F 階級"><option value="山甲">山甲</option><option value="緊身吊嘎 + 四角內褲">緊身吊嘎 + 四角內褲</option><option value="皮衣">皮衣</option></optgroup>
+                <optgroup label="特別 A+ (7甲 | 附帶技能)"><option value="星河聖甲">星河聖甲</option><option value="寂滅聖鎧">寂滅聖鎧</option><option value="神皇遺甲">神皇遺甲</option></optgroup>
+                <optgroup label="進階 B (4甲)"><option value="女僕裝">女僕裝</option><option value="營服">營服</option><option value="8+9 三件套">8+9 三件套</option></optgroup>
+                <optgroup label="基本 C- (2甲)"><option value="山甲">山甲</option><option value="緊身吊嘎 + 四角內褲">緊身吊嘎 + 四角內褲</option></optgroup>
+                <optgroup label="初始 F (1甲)"><option value="皮衣">皮衣</option></optgroup>
             </select>
-            <label>🛡️ 盾牌</label>
+            <label>🛡️ 盾牌 (決定每回減傷)</label>
             <select id="p1-shield">
                 <optgroup label="🎲 隨機選項"><option value="RANDOM_ALL">🎲 全部隨機</option><option value="RANDOM_A">🎲 A+ 隨機</option></optgroup>
-                <optgroup label="A+ 階級"><option value="星辰障壁">星辰障壁</option><option value="深淵封印">深淵封印</option><option value="神域之門">神域之門</option></optgroup>
-                <optgroup label="B 階級"><option value="Calculus metric version 9e">Calculus metric version 9e</option><option value="吸牛盾">吸牛盾</option><option value="防彈少年團">防彈少年團</option></optgroup>
-                <optgroup label="C/F 階級"><option value="執秘小心肝">執秘小心肝</option><option value="好好再見，不負遇見">好好再見，不負遇見</option><option value="無">無盾牌</option></optgroup>
+                <optgroup label="特別 A+ (3盾 | 附帶技能)"><option value="星辰障壁">星辰障壁</option><option value="深淵封印">深淵封印</option><option value="神域之門">神域之門</option></optgroup>
+                <optgroup label="進階 B (2盾)"><option value="Calculus metric version 9e">Calculus metric version 9e</option><option value="吸牛盾">吸牛盾</option><option value="防彈少年團">防彈少年團</option></optgroup>
+                <optgroup label="基本 C- (1盾)"><option value="執秘小心肝">執秘小心肝</option><option value="好好再見，不負遇見">好好再見，不負遇見</option></optgroup>
+                <optgroup label="初始 F (0盾)"><option value="無">無盾牌</option></optgroup>
             </select>
             <label>🗡️ 武器</label>
             <select id="p1-weapon">
                 <optgroup label="🎲 隨機選項"><option value="RANDOM_ALL">🎲 全部隨機</option><option value="RANDOM_A">🎲 A+ 隨機</option><option value="RANDOM_B">🎲 B 階隨機</option><option value="RANDOM_C">🎲 C- 階隨機</option></optgroup>
-                <optgroup label="A+ 階級"><option value="星隕之刃">星隕之刃</option><option value="終焉之刃">終焉之刃</option><option value="神罰之刃">神罰之刃</option></optgroup>
-                <optgroup label="B 階級"><option value="撞球桌">撞球桌</option><option value="炙杖">炙杖</option><option value="歐兜拜">歐兜拜</option></optgroup>
-                <optgroup label="C/F 階級"><option value="聖誕樹">聖誕樹</option><option value="啞鈴">啞鈴</option><option value="木劍">木劍</option></optgroup>
+                <optgroup label="特別 A+"><option value="星隕之刃">星隕之刃</option><option value="終焉之刃">終焉之刃</option><option value="神罰之刃">神罰之刃</option></optgroup>
+                <optgroup label="進階 B"><option value="撞球桌">撞球桌</option><option value="炙杖">炙杖</option><option value="歐兜拜">歐兜拜</option></optgroup>
+                <optgroup label="基本 C-"><option value="聖誕樹">聖誕樹</option><option value="啞鈴">啞鈴</option></optgroup>
+                <optgroup label="初始 F"><option value="木劍">木劍</option></optgroup>
             </select>
         </div>
         
         <div class="player-card" id="setup-p2">
             <h3 style="color: #f38ba8; margin-top: 0;">🔴 電腦 (AI)</h3>
-            <label>👕 盔甲</label>
+            <label>👕 盔甲 (決定血量: 20+甲)</label>
             <select id="p2-armor">
                 <optgroup label="🎲 隨機選項"><option value="RANDOM_ALL" selected>🎲 全部隨機</option><option value="RANDOM_A">🎲 A+ 隨機</option></optgroup>
-                <optgroup label="A+ 階級"><option value="星河聖甲">星河聖甲</option><option value="寂滅聖鎧">寂滅聖鎧</option><option value="神皇遺甲">神皇遺甲</option></optgroup>
-                <optgroup label="B 階級"><option value="女僕裝">女僕裝</option><option value="營服">營服</option><option value="8+9 三件套">8+9 三件套</option></optgroup>
-                <optgroup label="C/F 階級"><option value="山甲">山甲</option><option value="緊身吊嘎 + 四角內褲">緊身吊嘎 + 四角內褲</option><option value="皮衣">皮衣</option></optgroup>
+                <optgroup label="特別 A+ (7甲 | 附帶技能)"><option value="星河聖甲">星河聖甲</option><option value="寂滅聖鎧">寂滅聖鎧</option><option value="神皇遺甲">神皇遺甲</option></optgroup>
+                <optgroup label="進階 B (4甲)"><option value="女僕裝">女僕裝</option><option value="營服">營服</option><option value="8+9 三件套">8+9 三件套</option></optgroup>
+                <optgroup label="基本 C- (2甲)"><option value="山甲">山甲</option><option value="緊身吊嘎 + 四角內褲">緊身吊嘎 + 四角內褲</option></optgroup>
+                <optgroup label="初始 F (1甲)"><option value="皮衣">皮衣</option></optgroup>
             </select>
-            <label>🛡️ 盾牌</label>
+            <label>🛡️ 盾牌 (決定每回減傷)</label>
             <select id="p2-shield">
                 <optgroup label="🎲 隨機選項"><option value="RANDOM_ALL" selected>🎲 全部隨機</option><option value="RANDOM_A">🎲 A+ 隨機</option></optgroup>
-                <optgroup label="A+ 階級"><option value="星辰障壁">星辰障壁</option><option value="深淵封印">深淵封印</option><option value="神域之門">神域之門</option></optgroup>
-                <optgroup label="B 階級"><option value="Calculus metric version 9e">Calculus metric version 9e</option><option value="吸牛盾">吸牛盾</option><option value="防彈少年團">防彈少年團</option></optgroup>
-                <optgroup label="C/F 階級"><option value="執秘小心肝">執秘小心肝</option><option value="好好再見，不負遇見">好好再見，不負遇見</option><option value="無">無盾牌</option></optgroup>
+                <optgroup label="特別 A+ (3盾 | 附帶技能)"><option value="星辰障壁">星辰障壁</option><option value="深淵封印">深淵封印</option><option value="神域之門">神域之門</option></optgroup>
+                <optgroup label="進階 B (2盾)"><option value="Calculus metric version 9e">Calculus metric version 9e</option><option value="吸牛盾">吸牛盾</option><option value="防彈少年團">防彈少年團</option></optgroup>
+                <optgroup label="基本 C- (1盾)"><option value="執秘小心肝">執秘小心肝</option><option value="好好再見，不負遇見">好好再見，不負遇見</option></optgroup>
+                <optgroup label="初始 F (0盾)"><option value="無">無盾牌</option></optgroup>
             </select>
             <label>🗡️ 武器</label>
             <select id="p2-weapon">
                 <optgroup label="🎲 隨機選項"><option value="RANDOM_ALL" selected>🎲 全部隨機</option><option value="RANDOM_A">🎲 A+ 隨機</option><option value="RANDOM_B">🎲 B 階隨機</option><option value="RANDOM_C">🎲 C- 階隨機</option></optgroup>
-                <optgroup label="A+ 階級"><option value="星隕之刃">星隕之刃</option><option value="終焉之刃">終焉之刃</option><option value="神罰之刃">神罰之刃</option></optgroup>
-                <optgroup label="B 階級"><option value="撞球桌">撞球桌</option><option value="炙杖">炙杖</option><option value="歐兜拜">歐兜拜</option></optgroup>
-                <optgroup label="C/F 階級"><option value="聖誕樹">聖誕樹</option><option value="啞鈴">啞鈴</option><option value="木劍">木劍</option></optgroup>
+                <optgroup label="特別 A+"><option value="星隕之刃">星隕之刃</option><option value="終焉之刃">終焉之刃</option><option value="神罰之刃">神罰之刃</option></optgroup>
+                <optgroup label="進階 B"><option value="撞球桌">撞球桌</option><option value="炙杖">炙杖</option><option value="歐兜拜">歐兜拜</option></optgroup>
+                <optgroup label="基本 C-"><option value="聖誕樹">聖誕樹</option><option value="啞鈴">啞鈴</option></optgroup>
+                <optgroup label="初始 F"><option value="木劍">木劍</option></optgroup>
             </select>
         </div>
     </div>
