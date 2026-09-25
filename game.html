@@ -251,7 +251,7 @@ const IMG_MAP = {
     "星隕之刃": "img/sword_star.jpg", "終焉之刃": "img/sword_abyss.jpg", "神罰之刃": "img/sword_divine.jpg",
     
     "皮衣": "img/armor_leather.jpg", "山甲": "img/armor_pangolin.jpg", "緊身吊嘎 + 四角內褲": "img/armor_tanktop.jpg",
-    "女僕裝": "img/armor_maid.jpg", "8+9 三件套": "img/armor_89.jpg",
+    "女僕裝": "img/armor_maid.jpg", "營服": "img/armor_camp.jpg", "8+9 三件套": "img/armor_89.jpg",
     "星河聖甲": "img/armor_star.jpg", "寂滅聖鎧": "img/armor_abyss.jpg", "神皇遺甲": "img/armor_divine.jpg",
     
     "執秘小心肝": "img/shield_liver.jpg", "好好再見，不負遇見": "img/shield_book1.jpg", 
@@ -555,6 +555,21 @@ function endTurn() {
     } else {
         current_turn = p1;
         turn_count++;
+        
+        // ☠️ 新增：死鬥疲勞機制 (第 10 回合起觸發)
+        if (turn_count >= 10) {
+            let fatigue_dmg = turn_count - 9; // 第10回合扣1，第11回合扣2...
+            p1.hp -= fatigue_dmg;
+            p2.hp -= fatigue_dmg;
+            logMsg(`☠️ 【死鬥機制】戰鬥拖延過久，場地崩塌！雙方無視護盾受到 ${fatigue_dmg} 點真實傷害！`, "log-dmg");
+            
+            // 檢查是否有人因為死鬥機制倒下
+            if (!p1.is_alive() || !p2.is_alive()) {
+                updateUI();
+                checkGameOver();
+                return;
+            }
+        }
     }
     processTurn();
 }
