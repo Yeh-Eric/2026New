@@ -105,22 +105,29 @@
                 <optgroup label="C/F 階級"><option value="聖誕樹">聖誕樹</option><option value="啞鈴">啞鈴</option><option value="木劍">木劍</option></optgroup>
             </select>
         </div>
+        
         <div class="player-card" id="setup-p2">
             <h3 style="color: #f38ba8; margin-top: 0;">🔴 電腦 (AI)</h3>
             <label>👕 盔甲</label>
             <select id="p2-armor">
-                <optgroup label="🎲 隨機選項"><option value="RANDOM_A" selected>🎲 A+ 隨機</option><option value="RANDOM_ALL">🎲 全部隨機</option></optgroup>
-                <option value="星河聖甲">星河聖甲</option><option value="寂滅聖鎧">寂滅聖鎧</option><option value="神皇遺甲">神皇遺甲</option>
+                <optgroup label="🎲 隨機選項"><option value="RANDOM_ALL" selected>🎲 全部隨機</option><option value="RANDOM_A">🎲 A+ 隨機</option></optgroup>
+                <optgroup label="A+ 階級"><option value="星河聖甲">星河聖甲</option><option value="寂滅聖鎧">寂滅聖鎧</option><option value="神皇遺甲">神皇遺甲</option></optgroup>
+                <optgroup label="B 階級"><option value="女僕裝">女僕裝</option><option value="營服">營服</option><option value="8+9 三件套">8+9 三件套</option></optgroup>
+                <optgroup label="C/F 階級"><option value="山甲">山甲</option><option value="緊身吊嘎 + 四角內褲">緊身吊嘎 + 四角內褲</option><option value="皮衣">皮衣</option></optgroup>
             </select>
             <label>🛡️ 盾牌</label>
             <select id="p2-shield">
-                <optgroup label="🎲 隨機選項"><option value="RANDOM_A" selected>🎲 A+ 隨機</option><option value="RANDOM_ALL">🎲 全部隨機</option></optgroup>
-                <option value="星辰障壁">星辰障壁</option><option value="深淵封印">深淵封印</option><option value="神域之門">神域之門</option>
+                <optgroup label="🎲 隨機選項"><option value="RANDOM_ALL" selected>🎲 全部隨機</option><option value="RANDOM_A">🎲 A+ 隨機</option></optgroup>
+                <optgroup label="A+ 階級"><option value="星辰障壁">星辰障壁</option><option value="深淵封印">深淵封印</option><option value="神域之門">神域之門</option></optgroup>
+                <optgroup label="B 階級"><option value="Calculus metric version 9e">Calculus metric version 9e</option><option value="吸牛盾">吸牛盾</option><option value="防彈少年團">防彈少年團</option></optgroup>
+                <optgroup label="C/F 階級"><option value="執秘小心肝">執秘小心肝</option><option value="好好再見，不負遇見">好好再見，不負遇見</option><option value="無">無盾牌</option></optgroup>
             </select>
             <label>🗡️ 武器</label>
             <select id="p2-weapon">
-                <optgroup label="🎲 隨機選項"><option value="RANDOM_A" selected>🎲 A+ 隨機</option><option value="RANDOM_ALL">🎲 全部隨機</option></optgroup>
-                <option value="星隕之刃">星隕之刃</option><option value="終焉之刃">終焉之刃</option><option value="神罰之刃">神罰之刃</option>
+                <optgroup label="🎲 隨機選項"><option value="RANDOM_ALL" selected>🎲 全部隨機</option><option value="RANDOM_A">🎲 A+ 隨機</option><option value="RANDOM_B">🎲 B 階隨機</option><option value="RANDOM_C">🎲 C- 階隨機</option></optgroup>
+                <optgroup label="A+ 階級"><option value="星隕之刃">星隕之刃</option><option value="終焉之刃">終焉之刃</option><option value="神罰之刃">神罰之刃</option></optgroup>
+                <optgroup label="B 階級"><option value="撞球桌">撞球桌</option><option value="炙杖">炙杖</option><option value="歐兜拜">歐兜拜</option></optgroup>
+                <optgroup label="C/F 階級"><option value="聖誕樹">聖誕樹</option><option value="啞鈴">啞鈴</option><option value="木劍">木劍</option></optgroup>
             </select>
         </div>
     </div>
@@ -180,15 +187,15 @@
             <h3>🗡️ 武器庫 (傷害判定陣列)</h3>
             <table>
                 <tr><th>武器圖示與名稱</th><th>階級</th><th>傷害骰子 (機率均等)</th><th>特性簡述</th></tr>
-                <tr><td><div class="book-item"><img src="木劍.png" class="book-img"> 木劍</div></td><td>F</td><td>1, 2, 2, 3, 3, 4</td><td>極度微弱</td></tr>
-                <tr><td><div class="book-item"><img src="聖誕樹.jpg" class="book-img"> 聖誕樹</div></td><td>C-</td><td>5, 5, 5, 5, 6, 6</td><td>穩定平庸</td></tr>
-                <tr><td><div class="book-item"><img src="啞鈴.jpg" class="book-img"> 啞鈴</div></td><td>C-</td><td>3, 5, 7, 9, 11, <span class="highlight">-3</span></td><td>高風險低報酬</td></tr>
-                <tr><td><div class="book-item"><img src="撞球桌.jpg" class="book-img"> 撞球桌</div></td><td>B</td><td>5, 6, 6, 7, 7, 8</td><td>穩定優良</td></tr>
-                <tr><td><div class="book-item"><img src="炙杖.jpg" class="book-img"> 炙杖</div></td><td>B</td><td><span class="highlight">-5</span>, <span class="highlight">25</span>, <span class="highlight">-5</span>, 15, -1, 8</td><td>極端賭狗</td></tr>
-                <tr><td><div class="book-item"><img src="歐兜拜.PNG" class="book-img"> 歐兜拜</div></td><td>B</td><td>0, 0, 0, 8, 11, 14</td><td>要嘛沒傷要嘛痛</td></tr>
-                <tr><td><div class="book-item"><img src="星隕之刃.png" class="book-img"> 星隕之刃</div></td><td>A+ (星際)</td><td>9, 10, 10, 11, 11, 12</td><td>全遊戲最穩定高傷</td></tr>
-                <tr><td><div class="book-item"><img src="神罰之刃.png" class="book-img"> 神罰之刃</div></td><td>A+ (神界)</td><td>6, 7, 7, 9, 15, 18</td><td>保底不自殘爆發</td></tr>
-                <tr><td><div class="book-item"><img src="終焉之刃.png" class="book-img"> 終焉之刃</div></td><td>A+ (深淵)</td><td><span class="highlight">-4</span>, <span class="highlight">-4</span>, 12, 12, 19, <span class="highlight">35</span></td><td>致命自殘與毀滅斬殺</td></tr>
+                <tr><td><div class="book-item"><img src="img/sword_wood.jpg" class="book-img"> 木劍</div></td><td>F</td><td>1, 2, 2, 3, 3, 4</td><td>極度微弱</td></tr>
+                <tr><td><div class="book-item"><img src="img/sword_tree.jpg" class="book-img"> 聖誕樹</div></td><td>C-</td><td>5, 5, 5, 5, 6, 6</td><td>穩定平庸</td></tr>
+                <tr><td><div class="book-item"><img src="img/sword_dumbbell.jpg" class="book-img"> 啞鈴</div></td><td>C-</td><td>3, 5, 7, 9, 11, <span class="highlight">-3</span></td><td>高風險低報酬</td></tr>
+                <tr><td><div class="book-item"><img src="img/sword_pool.jpg" class="book-img"> 撞球桌</div></td><td>B</td><td>5, 6, 6, 7, 7, 8</td><td>穩定優良</td></tr>
+                <tr><td><div class="book-item"><img src="img/sword_fire.jpg" class="book-img"> 炙杖</div></td><td>B</td><td><span class="highlight">-5</span>, <span class="highlight">25</span>, <span class="highlight">-5</span>, 15, -1, 8</td><td>極端賭狗</td></tr>
+                <tr><td><div class="book-item"><img src="img/sword_moto.jpg" class="book-img"> 歐兜拜</div></td><td>B</td><td>0, 0, 0, 8, 11, 14</td><td>要嘛沒傷要嘛痛</td></tr>
+                <tr><td><div class="book-item"><img src="img/sword_star.jpg" class="book-img"> 星隕之刃</div></td><td>A+ (星際)</td><td>9, 10, 10, 11, 11, 12</td><td>全遊戲最穩定高傷</td></tr>
+                <tr><td><div class="book-item"><img src="img/sword_divine.jpg" class="book-img"> 神罰之刃</div></td><td>A+ (神界)</td><td>6, 7, 7, 9, 15, 18</td><td>保底不自殘爆發</td></tr>
+                <tr><td><div class="book-item"><img src="img/sword_abyss.jpg" class="book-img"> 終焉之刃</div></td><td>A+ (深淵)</td><td><span class="highlight">-4</span>, <span class="highlight">-4</span>, 12, 12, 19, <span class="highlight">35</span></td><td>致命自殘與毀滅斬殺</td></tr>
             </table>
         </div>
 
@@ -197,14 +204,14 @@
             <p style="font-size: 14px; color: #a6adc8;">※ A+ 裝備自帶主動大招。同系列湊齊 2 件或 3 件將自動觸發隱藏套裝加成。</p>
             <table>
                 <tr><th>裝備圖示與名稱</th><th>所屬派系與效果</th><th>專屬大招技能 (每局限用一次)</th></tr>
-                <tr><td><div class="book-item"><img src="星河聖甲.png" class="book-img"> 星河聖甲</div></td><td rowspan="2"><b>【星際套裝】</b><br>2件: 最大血量 <span class="highlight">+6</span><br>3件: 最大血量 <span class="highlight">+16</span></td><td>血量 ≤ 50% 發動，瞬間回復 10 點生命。</td></tr>
-                <tr><td><div class="book-item"><img src="星辰障壁.png" class="book-img"> 星辰障壁</div></td><td>血量 ≤ 45% 發動，護盾額外 +4，持續兩回合。</td></tr>
+                <tr><td><div class="book-item"><img src="img/armor_star.jpg" class="book-img"> 星河聖甲</div></td><td rowspan="2"><b>【星際套裝】</b><br>2件: 最大血量 <span class="highlight">+6</span><br>3件: 最大血量 <span class="highlight">+16</span></td><td>血量 ≤ 50% 發動，瞬間回復 10 點生命。</td></tr>
+                <tr><td><div class="book-item"><img src="img/shield_star.jpg" class="book-img"> 星辰障壁</div></td><td>血量 ≤ 45% 發動，護盾額外 +4，持續兩回合。</td></tr>
                 
-                <tr><td><div class="book-item"><img src="神皇遺甲.png" class="book-img"> 神皇遺甲</div></td><td rowspan="2"><b>【神界套裝】</b><br>2件: 常駐護盾 <span class="highlight">+1</span><br>3件: 常駐護盾 <span class="highlight">+3</span></td><td>第三回合必定發動，使對手暈眩一回合。</td></tr>
-                <tr><td><div class="book-item"><img src="神域之門.png" class="book-img"> 神域之門</div></td><td>被動技，遭受致死攻擊時，強制保留 1 滴血不死。</td></tr>
+                <tr><td><div class="book-item"><img src="img/armor_divine.jpg" class="book-img"> 神皇遺甲</div></td><td rowspan="2"><b>【神界套裝】</b><br>2件: 常駐護盾 <span class="highlight">+1</span><br>3件: 常駐護盾 <span class="highlight">+3</span></td><td>第三回合必定發動，使對手暈眩一回合。</td></tr>
+                <tr><td><div class="book-item"><img src="img/shield_divine.jpg" class="book-img"> 神域之門</div></td><td>被動技，遭受致死攻擊時，強制保留 1 滴血不死。</td></tr>
                 
-                <tr><td><div class="book-item"><img src="寂滅聖鎧.png" class="book-img"> 寂滅聖鎧</div></td><td rowspan="2"><b>【深淵套裝】</b><br>2件: 所有傷害 <span class="highlight">+1</span><br>3件: 所有傷害 <span class="highlight">+5</span></td><td>血量 ≤ 18 發動，完全免疫對手當回合攻擊。</td></tr>
-                <tr><td><div class="book-item"><img src="深淵封印.png" class="book-img"> 深淵封印</div></td><td>自身血量 ≤ 12 或敵方 ≤ 13，下次傷害額外 +10。</td></tr>
+                <tr><td><div class="book-item"><img src="img/armor_abyss.jpg" class="book-img"> 寂滅聖鎧</div></td><td rowspan="2"><b>【深淵套裝】</b><br>2件: 所有傷害 <span class="highlight">+1</span><br>3件: 所有傷害 <span class="highlight">+5</span></td><td>血量 ≤ 18 發動，完全免疫對手當回合攻擊。</td></tr>
+                <tr><td><div class="book-item"><img src="img/shield_abyss.jpg" class="book-img"> 深淵封印</div></td><td>自身血量 ≤ 12 或敵方 ≤ 13，下次傷害額外 +10。</td></tr>
             </table>
         </div>
     </div>
@@ -231,7 +238,7 @@ const SETS = {
     "神界": ["神皇遺甲", "神域之門", "神罰之刃"]
 };
 
-// 裝備實體圖片對應表
+// 裝備實體圖片對應表 (純英文防破圖版)
 const IMG_MAP = {
     "木劍": "img/sword_wood.jpg", "聖誕樹": "img/sword_tree.jpg", "啞鈴": "img/sword_dumbbell.jpg",
     "撞球桌": "img/sword_pool.jpg", "炙杖": "img/sword_fire.jpg", "歐兜拜": "img/sword_moto.jpg",
@@ -246,6 +253,7 @@ const IMG_MAP = {
     "吸牛盾": "img/shield_newton.jpg", "防彈少年團": "img/shield_bts.jpg",
     "星辰障壁": "img/shield_star.jpg", "深淵封印": "img/shield_abyss.jpg", "神域之門": "img/shield_divine.jpg"
 };
+
 const POOLS = {
     ARMOR: { A: ["星河聖甲", "寂滅聖鎧", "神皇遺甲"], ALL: Object.keys(ARMOR_STATS) },
     SHIELD: { A: ["星辰障壁", "深淵封印", "神域之門"], ALL: Object.keys(SHIELD_STATS).filter(s => s !== "無") },
