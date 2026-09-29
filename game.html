@@ -85,7 +85,12 @@
             <h3 style="color: #a6e3a1; margin-top: 0;">🟢 玩家 (你)</h3>
             <label>👕 盔甲 (決定血量: 20+甲)</label>
             <select id="p1-armor">
-                <optgroup label="🎲 隨機選項"><option value="RANDOM_ALL">🎲 全部隨機</option><option value="RANDOM_A">🎲 A+ 隨機</option></optgroup>
+                <optgroup label="🎲 隨機選項">
+                    <option value="RANDOM_ALL">🎲 全部隨機</option>
+                    <option value="RANDOM_A">🎲 A+ 隨機</option>
+                    <option value="RANDOM_B">🎲 B 階隨機</option>
+                    <option value="RANDOM_C">🎲 C- 階隨機</option>
+                </optgroup>
                 <optgroup label="特別 A+ (7甲 | 附帶技能)"><option value="星河聖甲">星河聖甲</option><option value="寂滅聖鎧">寂滅聖鎧</option><option value="神皇遺甲">神皇遺甲</option></optgroup>
                 <optgroup label="進階 B (4甲)"><option value="女僕裝">女僕裝</option><option value="營服">營服</option><option value="8+9 三件套">8+9 三件套</option></optgroup>
                 <optgroup label="基本 C- (2甲)"><option value="山甲">山甲</option><option value="緊身吊嘎 + 四角內褲">緊身吊嘎 + 四角內褲</option></optgroup>
@@ -93,7 +98,12 @@
             </select>
             <label>🛡️ 盾牌 (決定每回減傷)</label>
             <select id="p1-shield">
-                <optgroup label="🎲 隨機選項"><option value="RANDOM_ALL">🎲 全部隨機</option><option value="RANDOM_A">🎲 A+ 隨機</option></optgroup>
+                <optgroup label="🎲 隨機選項">
+                    <option value="RANDOM_ALL">🎲 全部隨機</option>
+                    <option value="RANDOM_A">🎲 A+ 隨機</option>
+                    <option value="RANDOM_B">🎲 B 階隨機</option>
+                    <option value="RANDOM_C">🎲 C- 階隨機</option>
+                </optgroup>
                 <optgroup label="特別 A+ (3盾 | 附帶技能)"><option value="星辰障壁">星辰障壁</option><option value="深淵封印">深淵封印</option><option value="神域之門">神域之門</option></optgroup>
                 <optgroup label="進階 B (2盾)"><option value="Calculus metric version 9e">Calculus metric version 9e</option><option value="吸牛盾">吸牛盾</option><option value="防彈少年團">防彈少年團</option></optgroup>
                 <optgroup label="基本 C- (1盾)"><option value="執秘小心肝">執秘小心肝</option><option value="好好再見，不負遇見">好好再見，不負遇見</option></optgroup>
@@ -110,10 +120,15 @@
         </div>
         
         <div class="player-card" id="setup-p2">
-            <h3 style="color: #f38ba8; margin-top: 0;">🔴 電腦 (AI)</h3>
+            <h3 style="color: #f38ba8; margin: 0 0 10px 0;">🔴 電腦 (AI)</h3>
             <label>👕 盔甲 (決定血量: 20+甲)</label>
             <select id="p2-armor">
-                <optgroup label="🎲 隨機選項"><option value="RANDOM_ALL" selected>🎲 全部隨機</option><option value="RANDOM_A">🎲 A+ 隨機</option></optgroup>
+                <optgroup label="🎲 隨機選項">
+                    <option value="RANDOM_ALL" selected>🎲 全部隨機</option>
+                    <option value="RANDOM_A">🎲 A+ 隨機</option>
+                    <option value="RANDOM_B">🎲 B 階隨機</option>
+                    <option value="RANDOM_C">🎲 C- 階隨機</option>
+                </optgroup>
                 <optgroup label="特別 A+ (7甲 | 附帶技能)"><option value="星河聖甲">星河聖甲</option><option value="寂滅聖鎧">寂滅聖鎧</option><option value="神皇遺甲">神皇遺甲</option></optgroup>
                 <optgroup label="進階 B (4甲)"><option value="女僕裝">女僕裝</option><option value="營服">營服</option><option value="8+9 三件套">8+9 三件套</option></optgroup>
                 <optgroup label="基本 C- (2甲)"><option value="山甲">山甲</option><option value="緊身吊嘎 + 四角內褲">緊身吊嘎 + 四角內褲</option></optgroup>
@@ -121,7 +136,12 @@
             </select>
             <label>🛡️ 盾牌 (決定每回減傷)</label>
             <select id="p2-shield">
-                <optgroup label="🎲 隨機選項"><option value="RANDOM_ALL" selected>🎲 全部隨機</option><option value="RANDOM_A">🎲 A+ 隨機</option></optgroup>
+                <optgroup label="🎲 隨機選項">
+                    <option value="RANDOM_ALL" selected>🎲 全部隨機</option>
+                    <option value="RANDOM_A">🎲 A+ 隨機</option>
+                    <option value="RANDOM_B">🎲 B 階隨機</option>
+                    <option value="RANDOM_C">🎲 C- 階隨機</option>
+                </optgroup>
                 <optgroup label="特別 A+ (3盾 | 附帶技能)"><option value="星辰障壁">星辰障壁</option><option value="深淵封印">深淵封印</option><option value="神域之門">神域之門</option></optgroup>
                 <optgroup label="進階 B (2盾)"><option value="Calculus metric version 9e">Calculus metric version 9e</option><option value="吸牛盾">吸牛盾</option><option value="防彈少年團">防彈少年團</option></optgroup>
                 <optgroup label="基本 C- (1盾)"><option value="執秘小心肝">執秘小心肝</option><option value="好好再見，不負遇見">好好再見，不負遇見</option></optgroup>
@@ -198,25 +218,25 @@
                 <tr><td><div class="book-item"><img src="img/sword_dumbbell.jpg" class="book-img"> 啞鈴</div></td><td>C-</td><td>3, 5, 7, 9, 11, <span class="highlight">-3</span></td><td>高風險低報酬</td></tr>
                 <tr><td><div class="book-item"><img src="img/sword_pool.jpg" class="book-img"> 撞球桌</div></td><td>B</td><td>5, 6, 6, 7, 7, 8</td><td>穩定優良</td></tr>
                 <tr><td><div class="book-item"><img src="img/sword_fire.jpg" class="book-img"> 炙杖</div></td><td>B</td><td><span class="highlight">-5</span>, <span class="highlight">25</span>, <span class="highlight">-5</span>, 15, -1, 8</td><td>極端賭狗</td></tr>
-                <tr><td><div class="book-item"><img src="img/sword_moto.jpg" class="book-img"> 歐兜拜</div></td><td>B</td><td>0, 0, 0, 8, 11, 14</td><td>要嘛沒傷要嘛痛</td></tr>
-                <tr><td><div class="book-item"><img src="img/sword_star.jpg" class="book-img"> 星隕之刃</div></td><td>A+ (星際)</td><td>9, 10, 10, 11, 11, 12</td><td>全遊戲最穩定高傷</td></tr>
-                <tr><td><div class="book-item"><img src="img/sword_divine.jpg" class="book-img"> 神罰之刃</div></td><td>A+ (神界)</td><td>6, 7, 7, 9, 15, 18</td><td>保底不自殘爆發</td></tr>
-                <tr><td><div class="book-item"><img src="img/sword_abyss.jpg" class="book-img"> 終焉之刃</div></td><td>A+ (深淵)</td><td><span class="highlight">-4</span>, <span class="highlight">-4</span>, 12, 12, 19, <span class="highlight">35</span></td><td>致命自殘與毀滅斬殺</td></tr>
+                <tr><td><div class="book-item"><img src="img/sword_moto.jpg" class="book-img"> 歐兜拜</div></td><td>B</td><td>0, 0, 1, <span class="highlight">10</span>, <span class="highlight">13</span>, <span class="highlight">16</span></td><td>要嘛沒傷要嘛痛</td></tr>
+                <tr><td><div class="book-item"><img src="img/sword_star.jpg" class="book-img"> 星隕之刃</div></td><td>A+ (星際)</td><td>8, 9, 9, 10, 10, 11</td><td>全遊戲最穩定高傷</td></tr>
+                <tr><td><div class="book-item"><img src="img/sword_divine.jpg" class="book-img"> 神罰之刃</div></td><td>A+ (神界)</td><td>5, 5, 5, 7, 15, 18</td><td>保底不自殘爆發</td></tr>
+                <tr><td><div class="book-item"><img src="img/sword_abyss.jpg" class="book-img"> 終焉之刃</div></td><td>A+ (深淵)</td><td><span class="highlight">-8</span>, <span class="highlight">-8</span>, 9, 9, 18, <span class="highlight">35</span></td><td>致命自殘與毀滅斬殺</td></tr>
             </table>
         </div>
 
         <div class="book-section">
             <h3>👕 盔甲與 🛡️ 盾牌 (A+大招與套裝)</h3>
-            <p style="font-size: 14px; color: #a6adc8;">※ 玩家可以主動選擇發動時機（每局限用一次）。同系列裝備湊齊將自動觸發隱藏套裝加成。</p>
+            <p style="font-size: 14px; color: #a6adc8;">※ 玩家每局限發動一次，可於同回合發動多個技能（AI 則受限於防浪費機制，每回合僅發動一次）。</p>
             <table>
                 <tr><th>裝備圖示與名稱</th><th>所屬派系與效果</th><th>專屬大招技能 (玩家自由發動)</th></tr>
-                <tr><td><div class="book-item"><img src="img/armor_star.jpg" class="book-img"> 星河聖甲</div></td><td rowspan="2"><b>【星際套裝】</b><br>2件: 最大血量 <span class="highlight">+6</span><br>3件: 最大血量 <span class="highlight">+16</span></td><td>回復 10 點生命。(可溢補)</td></tr>
+                <tr><td><div class="book-item"><img src="img/armor_star.jpg" class="book-img"> 星河聖甲</div></td><td rowspan="2"><b>【星際套裝】</b><br>2件: 最大血量 <span class="highlight">+8</span><br>3件: 最大血量 <span class="highlight">+15</span></td><td>回復 12 點生命。(可溢補)</td></tr>
                 <tr><td><div class="book-item"><img src="img/shield_star.jpg" class="book-img"> 星辰障壁</div></td><td>護盾額外 +4，持續兩回合。</td></tr>
                 
-                <tr><td><div class="book-item"><img src="img/armor_divine.jpg" class="book-img"> 神皇遺甲</div></td><td rowspan="2"><b>【神界套裝】</b><br>2件: 常駐護盾 <span class="highlight">+1</span><br>3件: 常駐護盾 <span class="highlight">+3</span></td><td>使對手暈眩一回合，無法攻擊。</td></tr>
+                <tr><td><div class="book-item"><img src="img/armor_divine.jpg" class="book-img"> 神皇遺甲</div></td><td rowspan="2"><b>【神界套裝】</b><br>2件: 常駐護盾 <span class="highlight">+2</span><br>3件: 常駐護盾 <span class="highlight">+3</span></td><td>使對手暈眩一回合，無法攻擊。</td></tr>
                 <tr><td><div class="book-item"><img src="img/shield_divine.jpg" class="book-img"> 神域之門</div></td><td><b>[被動技]</b> 遭受致死攻擊時，強制保留 1 滴血不死。</td></tr>
                 
-                <tr><td><div class="book-item"><img src="img/armor_abyss.jpg" class="book-img"> 寂滅聖鎧</div></td><td rowspan="2"><b>【深淵套裝】</b><br>2件: 所有傷害 <span class="highlight">+1</span><br>3件: 所有傷害 <span class="highlight">+5</span></td><td>完全免疫對手當回合的攻擊。</td></tr>
+                <tr><td><div class="book-item"><img src="img/armor_abyss.jpg" class="book-img"> 寂滅聖鎧</div></td><td rowspan="2"><b>【深淵套裝】</b><br>2件: 所有傷害 <span class="highlight">+2</span><br>3件: 所有傷害 <span class="highlight">+3</span></td><td>完全免疫對手當回合的攻擊。</td></tr>
                 <tr><td><div class="book-item"><img src="img/shield_abyss.jpg" class="book-img"> 深淵封印</div></td><td>下次攻擊傷害強制額外 +10。</td></tr>
             </table>
         </div>
@@ -224,11 +244,11 @@
 </div>
 
 <script>
-// --- 數值與圖片對應庫 ---
+// --- 數值與圖片對應庫 (完全沿用你的指定版本) ---
 const WEAPONS = {
     "木劍": [1, 2, 2, 3, 3, 4], "聖誕樹": [5, 5, 5, 5, 6, 6], "啞鈴": [3, 5, 7, 9, 11, -3],
-    "撞球桌": [5, 6, 6, 7, 7, 8], "炙杖": [-5, 25, -5, 15, -1, 8], "歐兜拜": [0, 0, 0, 8, 11, 14],
-    "星隕之刃": [9, 10, 10, 11, 11, 12], "終焉之刃": [-4, -4, 12, 12, 19, 35], "神罰之刃": [6, 7, 7, 9, 15, 18]
+    "撞球桌": [5, 6, 6, 7, 7, 8], "炙杖": [-5, 25, -5, 15, -1, 8], "歐兜拜": [0, 0, 1, 10, 13, 16],
+    "星隕之刃": [8, 9, 9, 10, 10, 11], "終焉之刃": [-8, -8, 9, 9, 18, 35], "神罰之刃": [5, 5, 5, 7, 15, 18]
 };
 const ARMOR_STATS = {
     "皮衣": 1, "山甲": 2, "緊身吊嘎 + 四角內褲": 2, "女僕裝": 4, "營服": 4, "8+9 三件套": 4,
@@ -261,8 +281,8 @@ const IMG_MAP = {
 };
 
 const POOLS = {
-    ARMOR: { A: ["星河聖甲", "寂滅聖鎧", "神皇遺甲"], ALL: Object.keys(ARMOR_STATS) },
-    SHIELD: { A: ["星辰障壁", "深淵封印", "神域之門"], ALL: Object.keys(SHIELD_STATS).filter(s => s !== "無") },
+    ARMOR: { A: ["星河聖甲", "寂滅聖鎧", "神皇遺甲"], B: ["女僕裝", "營服", "8+9 三件套"], C: ["山甲", "緊身吊嘎 + 四角內褲"], ALL: Object.keys(ARMOR_STATS) },
+    SHIELD: { A: ["星辰障壁", "深淵封印", "神域之門"], B: ["Calculus metric version 9e", "吸牛盾", "防彈少年團"], C: ["執秘小心肝", "好好再見，不負遇見"], ALL: Object.keys(SHIELD_STATS).filter(s => s !== "無") },
     WEAPON: { A: ["星隕之刃", "終焉之刃", "神罰之刃"], B: ["撞球桌", "炙杖", "歐兜拜"], C: ["聖誕樹", "啞鈴"], ALL: Object.keys(WEAPONS) }
 };
 
@@ -270,8 +290,18 @@ function getRandomItem(arr) { return arr[Math.floor(Math.random() * arr.length)]
 
 function parseSelection(type, val) {
     if (!val.startsWith("RANDOM_")) return val;
-    if (type === 'armor') return val === "RANDOM_A" ? getRandomItem(POOLS.ARMOR.A) : getRandomItem(POOLS.ARMOR.ALL);
-    if (type === 'shield') return val === "RANDOM_A" ? getRandomItem(POOLS.SHIELD.A) : getRandomItem(POOLS.SHIELD.ALL);
+    if (type === 'armor') {
+        if (val === "RANDOM_A") return getRandomItem(POOLS.ARMOR.A);
+        if (val === "RANDOM_B") return getRandomItem(POOLS.ARMOR.B);
+        if (val === "RANDOM_C") return getRandomItem(POOLS.ARMOR.C);
+        return getRandomItem(POOLS.ARMOR.ALL);
+    }
+    if (type === 'shield') {
+        if (val === "RANDOM_A") return getRandomItem(POOLS.SHIELD.A);
+        if (val === "RANDOM_B") return getRandomItem(POOLS.SHIELD.B);
+        if (val === "RANDOM_C") return getRandomItem(POOLS.SHIELD.C);
+        return getRandomItem(POOLS.SHIELD.ALL);
+    }
     if (type === 'weapon') {
         if (val === "RANDOM_A") return getRandomItem(POOLS.WEAPON.A);
         if (val === "RANDOM_B") return getRandomItem(POOLS.WEAPON.B);
@@ -303,17 +333,23 @@ class Character {
         let armor_val = ARMOR_STATS[armor_name];
         let shield_val = SHIELD_STATS[shield_name];
         
-        this.skills = [];
         let equip_list = [armor_name, shield_name, weapon_name];
-        Object.values(SETS).flat().forEach(item => { if (equip_list.includes(item)) this.skills.push(item); });
+        
+        // 裝備技能分離
+        this.armor_skill = POOLS.ARMOR.A.includes(armor_name) ? armor_name : null;
+        this.shield_skill = POOLS.SHIELD.A.includes(shield_name) ? shield_name : null;
+        this.skills = [];
+        if (this.armor_skill) this.skills.push(this.armor_skill);
+        if (this.shield_skill) this.skills.push(this.shield_skill);
 
         let star_c = equip_list.filter(i => SETS["星際"].includes(i)).length;
         let abyss_c = equip_list.filter(i => SETS["深淵"].includes(i)).length;
         let divine_c = equip_list.filter(i => SETS["神界"].includes(i)).length;
 
-        let set_hp = star_c >= 2 ? (star_c === 3 ? 16 : 6) : 0;
-        let set_shield = divine_c >= 2 ? (divine_c === 3 ? 3 : 1) : 0;
-        this.set_sword = abyss_c >= 2 ? (abyss_c === 3 ? 5 : 1) : 0;
+        // 最新黃金三角平衡
+        let set_hp = star_c >= 2 ? (star_c === 3 ? 15 : 8) : 0;
+        let set_shield = divine_c >= 2 ? (divine_c === 3 ? 3 : 2) : 0;
+        this.set_sword = abyss_c >= 2 ? (abyss_c === 3 ? 3 : 2) : 0;
 
         this.max_hp = 20 + armor_val + set_hp;
         this.hp = this.max_hp;
@@ -321,6 +357,7 @@ class Character {
         this.shield = this.base_shield;
         
         this.used_skills = new Set();
+        this.skill_used_this_turn = false; // AI 單回合行動限制
         this.shield_buff_turns = 0;
         this.invincible = false;
         this.skip_turn = false;
@@ -401,6 +438,10 @@ function startGame() {
 }
 
 function processTurn() {
+    // 重置雙方單回合行動標記（AI 防重疊使用）
+    p1.skill_used_this_turn = false;
+    p2.skill_used_this_turn = false;
+
     updateUI();
     if (!p1.is_alive() || !p2.is_alive()) return checkGameOver();
 
@@ -427,7 +468,7 @@ function renderPlayerSkills() {
     container.innerHTML = "";
     
     const activeSkills = [
-        { name: "星河聖甲", effect: "回血10" },
+        { name: "星河聖甲", effect: "回血12" },
         { name: "寂滅聖鎧", effect: "免疫當次攻擊" },
         { name: "神皇遺甲", effect: "暈眩對手" },
         { name: "星辰障壁", effect: "護盾+4(兩回合)" },
@@ -443,6 +484,7 @@ function renderPlayerSkills() {
                 btn.disabled = true;
                 btn.innerText = `${skill.name} (已使用)`;
             } else {
+                // 玩家不再受限於單回合單技能
                 btn.innerText = `${skill.name} (${skill.effect})`;
                 btn.onclick = () => { 
                     useSkill(p1, p2, skill.name); 
@@ -457,32 +499,48 @@ function renderPlayerSkills() {
 
 function useSkill(caster, target, skillName) {
     caster.used_skills.add(skillName); 
+    caster.skill_used_this_turn = true; // 觸發行動鎖定 (僅限制 AI)
     let logClass = caster.id === "p1" ? "log-p1" : "log-p2";
+    
     if (skillName === "星河聖甲") {
-        caster.hp += 10; 
-        logMsg(`✨ ${caster.name} 發動【星河聖甲】，回復 10 血！`, "log-skill");
+        caster.hp += 12; 
+        logMsg(`✨ ${caster.name} 發動【星河聖甲】，回復 12 血！`, "log-skill");
     } else if (skillName === "寂滅聖鎧") {
         caster.invincible = true;
-        logMsg(`🛡️ ${caster.name} 發動【寂滅聖鎧】，免疫當次攻擊！`, "log-skill");
+        logMsg(`🛡️ ${caster.name} 發動【寂滅聖鎧】，擺出JOJO立，免疫當次攻擊！`, "log-skill");
     } else if (skillName === "神皇遺甲") {
         target.skip_turn = true;
-        logMsg(`⚡ ${caster.name} 發動【神皇遺甲】，對手下回合無法攻擊！`, "log-skill");
+        logMsg(`⚡ ${caster.name} 發動【神皇遺甲】，單手指天，對手下回合無法攻擊！`, "log-skill");
     } else if (skillName === "星辰障壁") {
         caster.shield = caster.base_shield + 4;
         caster.shield_buff_turns = 2;
-        logMsg(`🌌 ${caster.name} 發動【星辰障壁】，護盾大幅提升！`, "log-skill");
+        logMsg(`🌌 ${caster.name} 發動【星辰障壁】，領域展開，護盾雙倍！`, "log-skill");
     } else if (skillName === "深淵封印") {
         caster.abyss_seal_active = true;
-        logMsg(`🔥 ${caster.name} 發動【深淵封印】，武器充能，準備斬殺！`, "log-skill");
+        logMsg(`🔥 ${caster.name} 發動【深淵封印】，解除封印，準備致命斬殺！`, "log-skill");
     }
 }
 
 function aiAction() {
-    if (p2.skills.includes("星河聖甲") && !p2.used_skills.has("星河聖甲") && p2.hp <= p2.max_hp * 0.5) useSkill(p2, p1, "星河聖甲");
-    if (p2.skills.includes("寂滅聖鎧") && !p2.used_skills.has("寂滅聖鎧") && p2.hp <= 18) useSkill(p2, p1, "寂滅聖鎧");
-    if (p2.skills.includes("神皇遺甲") && !p2.used_skills.has("神皇遺甲") && turn_count >= 2) useSkill(p2, p1, "神皇遺甲");
-    if (p2.skills.includes("星辰障壁") && !p2.used_skills.has("星辰障壁") && p2.hp <= p2.max_hp * 0.45) useSkill(p2, p1, "星辰障壁");
-    if (p2.skills.includes("深淵封印") && !p2.used_skills.has("深淵封印") && (p1.hp <= 13 || p2.hp <= 12)) useSkill(p2, p1, "深淵封印");
+    let is_safe = p2.invincible || (p2.shield_buff_turns > 0);
+    let p1_max_possible_dmg = Math.max(...p1.weapon) + p1.set_sword + (p1.abyss_seal_active ? 10 : 0);
+
+    // AI 行動經濟學：依循優先級並避免技能重疊浪費
+    if (p2.skills.includes("寂滅聖鎧") && !p2.used_skills.has("寂滅聖鎧") && !p2.skill_used_this_turn && !is_safe) {
+        if (p2.hp <= p1_max_possible_dmg) useSkill(p2, p1, "寂滅聖鎧");
+    }
+    if (p2.skills.includes("星辰障壁") && !p2.used_skills.has("星辰障壁") && !p2.skill_used_this_turn && !is_safe) {
+        if (p2.hp <= p2.max_hp * 0.5) useSkill(p2, p1, "星辰障壁");
+    }
+    if (p2.skills.includes("星河聖甲") && !p2.used_skills.has("星河聖甲") && !p2.skill_used_this_turn) {
+        if (p2.hp <= p2.max_hp * 0.4) useSkill(p2, p1, "星河聖甲");
+    }
+    if (p2.skills.includes("深淵封印") && !p2.used_skills.has("深淵封印") && !p2.skill_used_this_turn) {
+        if (p1.hp <= 18) useSkill(p2, p1, "深淵封印");
+    }
+    if (p2.skills.includes("神皇遺甲") && !p2.used_skills.has("神皇遺甲") && !p2.skill_used_this_turn) {
+        if (turn_count === 2) useSkill(p2, p1, "神皇遺甲");
+    }
     
     updateUI();
     setTimeout(() => { animateDiceAndAttack(p2, p1); }, 800);
