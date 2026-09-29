@@ -653,6 +653,12 @@ function checkGameOver() {
         logMsg("🥀 戰鬥結束！【電腦】擊敗了你，再接再厲！", "log-p2");
     }
 }
+    // 點擊圖鑑外部背景 (overlay) 時，自動關閉視窗
+    document.getElementById('book-modal').addEventListener('click', function(event) {
+        if (event.target === this) {
+            toggleBook();
+        }
+    });
 </script>
 </body>
 </html>
