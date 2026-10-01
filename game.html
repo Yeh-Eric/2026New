@@ -109,7 +109,7 @@
                 <optgroup label="基本 C- (1盾)"><option value="執秘小心肝">執秘小心肝</option><option value="好好再見，不負遇見">好好再見，不負遇見</option></optgroup>
                 <optgroup label="初始 F (0盾)"><option value="無">無盾牌</option></optgroup>
             </select>
-            <label>🗡️ 武器</label>
+            <label>🗡️️ 武器</label>
             <select id="p1-weapon">
                 <optgroup label="🎲 隨機選項"><option value="RANDOM_ALL">🎲 全部隨機</option><option value="RANDOM_A">🎲 A+ 隨機</option><option value="RANDOM_B">🎲 B 階隨機</option><option value="RANDOM_C">🎲 C- 階隨機</option></optgroup>
                 <optgroup label="特別 A+"><option value="星隕之刃">星隕之刃</option><option value="終焉之刃">終焉之刃</option><option value="神罰之刃">神罰之刃</option></optgroup>
@@ -147,7 +147,7 @@
                 <optgroup label="基本 C- (1盾)"><option value="執秘小心肝">執秘小心肝</option><option value="好好再見，不負遇見">好好再見，不負遇見</option></optgroup>
                 <optgroup label="初始 F (0盾)"><option value="無">無盾牌</option></optgroup>
             </select>
-            <label>🗡️ 武器</label>
+            <label>🗡️️ 武器</label>
             <select id="p2-weapon">
                 <optgroup label="🎲 隨機選項"><option value="RANDOM_ALL" selected>🎲 全部隨機</option><option value="RANDOM_A">🎲 A+ 隨機</option><option value="RANDOM_B">🎲 B 階隨機</option><option value="RANDOM_C">🎲 C- 階隨機</option></optgroup>
                 <optgroup label="特別 A+"><option value="星隕之刃">星隕之刃</option><option value="終焉之刃">終焉之刃</option><option value="神罰之刃">神罰之刃</option></optgroup>
@@ -195,7 +195,8 @@
         <div id="dice-visual" class="dice-display">🎲</div>
         <div id="player-skills-container"></div>
         <button id="btn-roll" class="btn-roll" onclick="playerRoll()">🎲 擲骰攻擊</button>
-        <button id="btn-restart" class="btn-main hidden" onclick="location.reload()" style="margin-top: 10px; background-color: #a6e3a1;">🔄 再來一局</button>
+        <!-- 修改為呼叫 restartGame() -->
+        <button id="btn-restart" class="btn-main hidden" onclick="restartGame()" style="margin-top: 10px; background-color: #a6e3a1;">🔄 再來一局</button>
     </div>
 
     <div class="combat-log" id="combat-log">
@@ -210,7 +211,7 @@
         <h2 style="color: #f9e2af; margin-top: 0;">📖 營隊裝備圖鑑</h2>
         
         <div class="book-section">
-            <h3>🗡️ 武器庫 (傷害判定陣列)</h3>
+            <h3>🗡️️ 武器庫 (傷害判定陣列)</h3>
             <table>
                 <tr><th>武器圖示與名稱</th><th>階級</th><th>傷害骰子 (機率均等)</th><th>特性簡述</th></tr>
                 <tr><td><div class="book-item"><img src="img/sword_wood.jpg" class="book-img"> 木劍</div></td><td>F</td><td>1, 2, 2, 3, 3, 4</td><td>極度微弱</td></tr>
@@ -399,7 +400,7 @@ function updateUI() {
     document.getElementById("p1-buffs").innerText = p1_buffs.join(" | ");
 
     let p2_buffs = [];
-    if (p2.invincible) p2_buffs.push("🛡️ 無敵");
+    if (p2.invincible) p2_buffs.push("🛡️️ 無敵");
     if (p2.skip_turn) p2_buffs.push("⚡ 暈眩");
     if (p2.abyss_seal_active) p2_buffs.push("🔥 下次增傷+10");
     if (p2.shield_buff_turns > 0) p2_buffs.push("🌌 護盾強化");
@@ -425,6 +426,13 @@ function startGame() {
     document.getElementById("p1-equip-text").innerText = p1.equip_text;
     document.getElementById("p2-equip-text").innerText = p2.equip_text;
 
+    // 重置戰鬥介面與紀錄狀態
+    document.getElementById("combat-log").innerHTML = "<div>系統：戰鬥開始！準備迎戰！</div>";
+    document.getElementById("dice-visual").innerText = "🎲";
+    document.getElementById("btn-roll").classList.remove("hidden");
+    document.getElementById("btn-restart").classList.add("hidden");
+    document.getElementById("player-skills-container").innerHTML = "";
+
     document.getElementById("screen-setup").classList.add("hidden");
     document.getElementById("screen-battle").classList.remove("hidden");
     
@@ -435,6 +443,12 @@ function startGame() {
     logMsg(`系統：硬幣落下，由 [${current_turn.name}] 取得先攻！`, "log-turn");
     
     processTurn();
+}
+
+// 返回設定畫面並保留上次的選單選擇
+function restartGame() {
+    document.getElementById("screen-battle").classList.add("hidden");
+    document.getElementById("screen-setup").classList.remove("hidden");
 }
 
 function processTurn() {
@@ -590,7 +604,7 @@ function executeAttack(attacker, defender, base_dmg) {
             defender.invincible = false;
             logMsg(`🛡️ 被 ${defender.name} 的無敵狀態完全擋下！`);
         } else {
-            if (defender.shield > 0) logMsg(`🛡️ 護盾抵擋了 ${Math.min(defender.shield, base_dmg + attacker.set_sword + bonus_sword)} 點傷害。`);
+            if (defender.shield > 0) logMsg(`🛡️️ 護盾抵擋了 ${Math.min(defender.shield, base_dmg + attacker.set_sword + bonus_sword)} 點傷害。`);
             defender.hp -= actual_dmg;
             logMsg(`🩸 ${defender.name} 實際損失了 ${actual_dmg} 點生命值！`, "log-dmg");
             
